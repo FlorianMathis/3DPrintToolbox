@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="KI-gestützter Workflow-Assistent für die 3D-Reproduktion antiker Objekte im Rätischen Museum. Generiert optimale Slicing-Parameter für den Bambu Lab X2D.">
+    <title>3D-Reproduktions-Assistent | Rätisches Museum</title>
+    <!-- Premium Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- Premium Holographic Ambient Background Blur -->
+    <div class="bg-blobs">
+        <div class="blob blob-gold"></div>
+        <div class="blob blob-blue"></div>
+        <div class="grid-overlay"></div>
+    </div>
+
+    <!-- Main Workspace Layout -->
+    <div class="app-container">
+
+        <!-- Sidebar: Object List & Navigation -->
+        <aside class="sidebar" id="app-sidebar" aria-label="Historie und Steuerung">
+            <div class="sidebar-header">
+                <div>
+                    <div class="sidebar-title-container">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" style="color: var(--accent-gold);">
+                            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
+                        </svg>
+                        <h2>Objekt-Archiv</h2>
+                    </div>
+                    <p class="sidebar-archive-desc">
+                        Bereits gedruckte 3D-Modelle mit den entsprechenden Eigenschaften und Druckprofilen.
+                    </p>
+                </div>
+                <button class="btn btn-new" id="btn-new-project">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2.5">
+                        <line x1="12" y1="5" x2="12" y2="19"></line>
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                    </svg>
+                    Neues Modell erfassen
+                </button>
+            </div>
+            <!-- Dynamic List of Saved Projects -->
+            <div class="project-list" id="project-list"></div>
+        </aside>
+
+        <!-- Main Wrapper -->
+        <div class="main-wrapper">
+
+            <!-- Sleek Header -->
+            <header class="app-header">
+                <div class="brand">
+                    <div class="brand-details">
+                        <h1>3D-Workflow-Assistent</h1>
+                        <span class="subtitle" style="display: flex; align-items: center; gap: 0.5rem;">
+                            <span class="bambu-badge">Bambu Lab X2D</span>
+                            <div style="
+                                position: relative;
+                                width: 24px;
+                                height: 24px;
+                                display: flex;
+                                justify-content: center;
+                                align-items: center;
+                                border-radius: 4px;
+                                background: radial-gradient(ellipse at center, rgba(179,137,60,0.15) 0%, transparent 70%);
+                                animation: floatPrinter 4s ease-in-out infinite;
+                            ">
+                                <img src="images/bambu-lab-x2d-combo-2613892-de.png" alt="Bambu Lab X2D" style="
+                                        width: 100%;
+                                        height: auto;
+                                        filter: drop-shadow(0 4px 12px rgba(212,168,67,0.3));
+                                        transition: transform 0.3s ease;
+                                     " onmouseover="this.style.transform='scale(1.15)'"
+                                    onmouseout="this.style.transform='scale(1)'" />
+                            </div>
+                        </span>
+                    </div>
+                </div>
+                <div class="header-right-actions" style="display: flex; align-items: center; gap: 0.75rem;">
+                    <div class="partner-logos">
+                        <div class="partner-logo-container" title="Change3D">
+                            <img src="../change3dlogo.png" alt="Change3D Logo" class="partner-logo">
+                        </div>
+                        <div class="partner-logo-container" title="FH Graubünden">
+                            <img src="../fhgrlogo.png" alt="FH Graubünden Logo" class="partner-logo">
+                        </div>
+                        <div class="partner-logo-container" title="Rätisches Museum">
+                            <img src="../raetisches-muesum.png" alt="Rätisches Museum Logo" class="partner-logo">
+                        </div>
+                    </div>
+                    <button class="btn-settings-gear" id="btn-settings" title="3D-Druck-Presets verwalten">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2.2">
+                            <circle cx="12" cy="12" r="3"></circle>
+                            <path
+                                d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06-.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06-.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z">
+                            </path>
+                        </svg>
+                    </button>
+                </div>
+            </header>
+
+            <main class="dashboard-container" id="main-content">
+
+                <!-- SCREEN 0: Welcome Landing Page -->
+                <div class="screen-state" id="screen-welcome">
+                    <div class="welcome-card-container">
+                        <div class="glass-panel welcome-card">
+                            <div class="welcome-icon-circle">🏺</div>
+                            <h2>Willkommen beim 3D-Workflow-Assistenten</h2>
+                            <p>KI-gestützter Leitfaden zur Reproduktion antiker Objekte des Rätischen Museums.</p>
+                            <p class="welcome-instructions">
+                                Wählen Sie ein Objekt aus dem linken Menü oder starten Sie die Neuerfassung eines
+                                Modells.
+                            </p>
+                            <button class="btn btn-welcome-action" id="btn-welcome-new">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2.5">
+                                    <line x1="12" y1="5" x2="12" y2="19"></line>
+                                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                                </svg>
+                                Neues Modell erfassen
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SCREEN 1: Ingest Portal (Centered Dashboard Panel) -->
+                <div class="screen-state hidden" id="screen-ingest">
+                    <div class="ingest-card-container">
+                        <div class="glass-panel ingest-card">
+
+                            <div class="ingest-card-header">
+                                <span class="badge-tech">Portal-Eingabe</span>
+                                <h2>Workflow-Konfigurator</h2>
+                                <p>Geben Sie die Spezifikationen Ihres 3D-Scans und die gewünschten haptischen Ziele an.
+                                </p>
+                            </div>
+
+                            <!-- Section 1: Core Metadata -->
+                            <section class="form-section-block" aria-labelledby="sec-meta-title">
+                                <h3 class="form-section-title" id="sec-meta-title">
+                                    <span class="number-indicator">01</span> Objekt-Metadaten
+                                </h3>
+                                <div class="form-group-row">
+                                    <div class="form-group">
+                                        <label for="inp-name">Objekt-Bezeichnung *</label>
+                                        <input type="text" id="inp-name" class="form-input"
+                                            placeholder="z. B. Bronzezeitliche Gussform" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="inp-inv">Inventar-Nummer</label>
+                                        <input type="text" id="inp-inv" class="form-input" placeholder="z. B. 2026-A12">
+                                    </div>
+                                </div>
+                            </section>
+
+                            <!-- Section 2: 3D-File Ingest (Placed before Category C) -->
+                            <section class="form-section-block" aria-labelledby="sec-upload-title">
+                                <h3 class="form-section-title" id="sec-upload-title">
+                                    <span class="number-indicator">02</span> 3D-Scan des Originalobjekts
+                                </h3>
+                                <p class="form-section-description">
+                                    Laden Sie die Scandatei des Objekts hoch (z. B. STL, OBJ oder 3MF), um die
+                                    Dateidetails in die Berechnungen des Workflows und des optimalen Druckprofils
+                                    miteinzubeziehen.
+                                </p>
+
+                                <div class="upload-area-wrapper">
+                                    <div class="upload-zone" id="drop-zone">
+                                        <div class="upload-icon-circle">
+                                            <svg class="upload-icon" width="28" height="28" viewBox="0 0 24 24"
+                                                fill="none" stroke="currentColor" stroke-width="1.8"
+                                                stroke-linecap="round" stroke-linejoin="round">
+                                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                                <polyline points="17 8 12 3 7 8"></polyline>
+                                                <line x1="12" y1="3" x2="12" y2="15"></line>
+                                            </svg>
+                                        </div>
+                                        <div class="upload-text-primary">
+                                            <span class="highlight-gold">Datei auswählen</span> oder hierher ziehen
+                                        </div>
+                                        <div class="upload-text-secondary">STL, OBJ, 3MF, PLY, GLB (max. 100MB)</div>
+                                    </div>
+
+                                    <!-- File Details (Dynamic Overlay/Box) -->
+                                    <div class="file-info-box hidden" id="file-info">
+                                        <div class="file-info-details">
+                                            <div class="file-icon-bg">
+                                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                                    stroke="currentColor" stroke-width="2">
+                                                    <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+                                                    <polyline points="2 17 12 22 22 17"></polyline>
+                                                    <polyline points="2 12 12 17 22 12"></polyline>
+                                                </svg>
+                                            </div>
+                                            <div class="file-text">
+                                                <div class="file-name" id="file-name-text">rom_coin_replica.obj</div>
+                                                <div class="file-size" id="file-size-text">8.7 MB</div>
+                                            </div>
+                                        </div>
+                                        <div class="file-actions">
+                                            <span class="badge-status">✓ Datei bereit</span>
+                                            <button type="button" class="btn-remove-file" id="btn-remove-file"
+                                                title="Datei entfernen">✕</button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Gallery Database selection -->
+                                <div class="gallery-database-wrapper">
+                                    <div class="gallery-header-info">
+                                        <h4>Oder: Aus Archivgewölbe wählen</h4>
+                                        <p>Wählen Sie ein bereits gescanntes 3D-Modell aus der Museumsdatenbank:</p>
+                                    </div>
+                                    <div class="gallery-grid" id="gallery-grid">
+                                        <!-- Dynamic cards generated by app.js -->
+                                    </div>
+                                </div>
+                            </section>
+
+                            <section class="form-section-block" aria-labelledby="sec-targets-title">
+                                <h3 class="form-section-title" id="sec-targets-title">
+                                    <span class="number-indicator">03</span> Technische Druck-Ziele
+                                </h3>
+
+                                <div class="form-group" style="margin-bottom: 1.5rem;">
+                                    <label for="inp-profile">3D-Druck-Preset *</label>
+                                    <select id="inp-profile" class="form-select">
+                                        <!-- Dynamically loaded -->
+                                    </select>
+                                    <p class="profile-desc-help" id="profile-desc-help-text">
+                                        Wählen Sie ein vordefiniertes 3D-Druck-Preset aus.
+                                    </p>
+                                </div>
+
+                                <div class="form-group-row">
+                                    <div class="form-group">
+                                        <label for="inp-scale">Skalierungsfaktor</label>
+                                        <select id="inp-scale" class="form-select">
+                                            <option value="1:1">1:1 (Originalgrösse)</option>
+                                            <option value="2:1">2:1 (Zweifache Vergrösserung)</option>
+                                            <option value="5:1">5:1 (Fünffache Detailvergrösserung)</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="inp-weight">Zielgewicht (in Gramm)</label>
+                                        <select id="inp-weight" class="form-select">
+                                            <option value="">Keine Gewichtsanpassung</option>
+                                            <option value="20">20g (Leichtbau/Hohlkörper)</option>
+                                            <option value="50">50g (Standardgewicht)</option>
+                                            <option value="75">75g (Mittelschwer)</option>
+                                            <option value="100">100g (Massives Gefühl)</option>
+                                            <option value="250">250g (Schweres Tastmodell)</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group-row">
+                                    <div class="form-group">
+                                        <label for="inp-material">Filament-Material</label>
+                                        <select id="inp-material" class="form-select">
+                                            <option value="PLA">PLA – Formstabil und ideal für
+                                                detailreiche Oberflächen.</option>
+                                            <option value="PETG">PETG – Besitzt eine hohe
+                                                Schlagfestigkeit.</option>
+                                            <option value="TPU">TPU – Gummiartig, elastisch und hochgradig flexibel bei
+                                                Stossbelastungen.</option>
+                                        </select>
+                                        <p class="material-desc" id="material-desc-text">
+                                            PLA ist formstabil und ideal für detailreiche, matte
+                                            Oberflächen.
+                                        </p>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Filament-Farbe</label>
+                                        <div class="color-swatch-container">
+                                            <label class="swatch-item">
+                                                <input type="radio" name="obj-color" value="Blau">
+                                                <span class="swatch-color color-blue" title="Blau"></span>
+                                                <span class="swatch-name">Blau</span>
+                                            </label>
+                                            <label class="swatch-item">
+                                                <input type="radio" name="obj-color" value="Holzfarbe">
+                                                <span class="swatch-color color-wood" title="Holzfarbe"></span>
+                                                <span class="swatch-name">Holz</span>
+                                            </label>
+                                            <label class="swatch-item">
+                                                <input type="radio" name="obj-color" value="Schwarz">
+                                                <span class="swatch-color color-black" title="Schwarz"></span>
+                                                <span class="swatch-name">Schwarz</span>
+                                            </label>
+                                            <label class="swatch-item">
+                                                <input type="radio" name="obj-color" value="Weiss">
+                                                <span class="swatch-color color-white" title="Weiss"></span>
+                                                <span class="swatch-name">Weiss</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Haptischer Fokus (Mehrfachauswahl möglich)</label>
+                                    <div class="haptic-focus-grid">
+                                        <label class="chip-checkbox">
+                                            <input type="checkbox" name="haptics" value="Oberflächenstruktur/Textur">
+                                            <span class="chip-label">
+                                                <span class="chip-icon">🔍</span>
+                                                <span>Oberflächenstruktur / Textur</span>
+                                            </span>
+                                        </label>
+                                        <label class="chip-checkbox">
+                                            <input type="checkbox" name="haptics" value="Gewicht/Massendichte">
+                                            <span class="chip-label">
+                                                <span class="chip-icon">⚖️</span>
+                                                <span>Gewicht / Massendichte</span>
+                                            </span>
+                                        </label>
+                                        <label class="chip-checkbox">
+                                            <input type="checkbox" name="haptics"
+                                                value="Mechanische Belastbarkeit (Häufiges Anfassen)">
+                                            <span class="chip-label">
+                                                <span class="chip-icon">💪</span>
+                                                <span>Mechanische Belastbarkeit</span>
+                                            </span>
+                                        </label>
+                                        <label class="chip-checkbox">
+                                            <input type="checkbox" name="haptics" value="Mehrfarbig">
+                                            <span class="chip-label">
+                                                <span class="chip-icon">🎨</span>
+                                                <span>Mehrfarbig</span>
+                                            </span>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="inp-accessories">Kommentare / Zusatzteile / Ergänzungsteile</label>
+                                    <input type="text" id="inp-accessories" class="form-input"
+                                        placeholder="z. B. Echte Kette für Ringsonnenuhr hinzufügen">
+                                </div>
+                            </section>
+
+                            <!-- Generate Action -->
+                            <div class="form-action-footer">
+                                <button class="btn btn-generate-gradient" id="btn-generate">
+                                    <span>Workflow mit Museums-KI berechnen</span>
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <polyline points="13 5 20 12 13 19"></polyline>
+                                        <line x1="20" y1="12" x2="4" y2="12"></line>
+                                    </svg>
+                                </button>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SCREEN 2: Workflow & Checklist Dashboard -->
+                <div class="screen-state hidden" id="screen-workflow">
+
+                    <!-- Top Info bar -->
+                    <div class="workflow-header-bar">
+                        <div class="workflow-header-info">
+                            <h2 id="wf-object-name">Bronzezeitliche Gussform</h2>
+                            <p>Ziel: <span id="wf-object-target">Tastmodell</span> | Preset: <span
+                                    id="wf-object-profile">Gewichtsoptimiert & Robust</span></p>
+                        </div>
+                        <div class="workflow-header-actions">
+                            <button class="btn btn-secondary" id="btn-back-to-portal">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2.2">
+                                    <line x1="19" y1="12" x2="5" y2="12"></line>
+                                    <polyline points="12 19 5 12 12 5"></polyline>
+                                </svg>
+                                Bearbeiten
+                            </button>
+                            <button class="btn btn-secondary" id="btn-save-workflow">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2.2">
+                                    <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
+                                    <polyline points="17 21 17 13 7 13 7 21"></polyline>
+                                    <polyline points="7 3 7 8 15 8"></polyline>
+                                </svg>
+                                Speichern
+                            </button>
+                            <button class="btn btn-print" id="btn-print-checklist">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2.2">
+                                    <polyline points="6 9 6 2 18 2 18 9"></polyline>
+                                    <path
+                                        d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2">
+                                    </path>
+                                    <rect x="6" y="14" width="12" height="8"></rect>
+                                </svg>
+                                Drucken (Analog)
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Workflow layout -->
+                    <div class="workflow-layout">
+
+                        <!-- Interactive Checklist -->
+                        <div class="glass-panel checklist-card">
+                            <div class="checklist-card-header">
+                                <h3>Reproduktions-Workflow & Checkliste</h3>
+                                <span class="badge-helper">Offline-Modus aktiv</span>
+                            </div>
+
+                            <div id="wf-checklist">
+                                <!-- Dynamically generated by app.js -->
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </main>
+        </div>
+
+    </div>
+
+    <!-- AI Calculation Loading Overlay (Matrix / Terminal Simulation) -->
+    <div class="ai-overlay" id="ai-overlay">
+        <div class="ai-loader-container">
+            <div class="ai-spinner-hologram">
+                <div class="ring r1"></div>
+                <div class="ring r2"></div>
+                <div class="ring r3"></div>
+            </div>
+            <h2>Museums-KI analysiert Scandaten...</h2>
+            <div class="ai-terminal" id="ai-terminal">
+                <!-- Lines printed by app.js -->
+            </div>
+        </div>
+    </div>
+
+    <!-- PRINT LAYOUT (Hides standard app UI completely under @media print) -->
+    <div id="print-layout" class="print-only-layout">
+        <!-- PAGE 1: Deckblatt (Cover Page) -->
+        <div class="print-cover">
+            <div class="print-header">
+                <div class="print-brand">
+                    <h2>RÄTISCHES MUSEUM</h2>
+                    <p>3D-Reproduktion - Technisches Datenblatt</p>
+                </div>
+                <div class="print-meta-date" id="print-date">15.06.2026</div>
+            </div>
+
+            <div class="print-divider"></div>
+
+            <div class="print-title-section">
+                <h1>REPRODUKTIONS-PROTOKOLL & WORKFLOW</h1>
+                <p>Dokumentiert die technischen Vorgaben und Slicing-Parameter für den Bambu Lab X2D Drucker.</p>
+            </div>
+
+            <!-- Metadata Table -->
+            <div class="print-section">
+                <h3>1. Objekt-Spezifikationen (Original & Scan)</h3>
+                <table class="print-table">
+                    <tr>
+                        <th>Objekt-Bezeichnung:</th>
+                        <td id="print-obj-name" colspan="3">-</td>
+                    </tr>
+                    <tr>
+                        <th>Inventar-Nummer:</th>
+                        <td id="print-obj-inv">-</td>
+                        <th>Skalierungsfaktor:</th>
+                        <td id="print-obj-scale">-</td>
+                    </tr>
+                    <tr>
+                        <th>Filament-Material:</th>
+                        <td id="print-obj-mat">-</td>
+                        <th>Filament-Farbe:</th>
+                        <td id="print-obj-color">-</td>
+                    </tr>
+                    <tr>
+                        <th>Haptischer Fokus:</th>
+                        <td id="print-obj-haptics">-</td>
+                        <th>Zielgewicht:</th>
+                        <td id="print-obj-weight">-</td>
+                    </tr>
+                    <tr>
+                        <th>Ergänzungsteile / Kommentare:</th>
+                        <td id="print-obj-acc" colspan="3">-</td>
+                    </tr>
+                </table>
+            </div>
+
+
+
+            <!-- Signature block -->
+            <div class="print-signatures">
+                <div class="print-sig-col">
+                    <p>Erstellt durch (Technik):</p>
+                    <div class="print-sig-line"></div>
+                    <p>Datum / Handzeichen</p>
+                </div>
+                <div class="print-sig-col">
+                    <p>Freigegeben durch (Kuratorium):</p>
+                    <div class="print-sig-line"></div>
+                    <p>Datum / Handzeichen</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dynamic Page Break -->
+        <div class="print-page-break"></div>
+
+        <!-- PAGE 2: Checklist Page -->
+        <div class="print-checklist-page">
+            <div class="print-header">
+                <div class="print-brand">
+                    <h2>RÄTISCHES MUSEUM</h2>
+                    <p>3D-Reproduktion - Schritt-für-Schritt Leitfaden</p>
+                </div>
+            </div>
+
+            <div class="print-divider"></div>
+
+            <div class="print-meta-summary">
+                <strong>Objekt:</strong> <span id="print-chk-obj-name">-</span> &nbsp;|&nbsp;
+                <strong>Inventarnummer:</strong> <span id="print-chk-obj-inv">-</span> &nbsp;|&nbsp;
+                <strong>Preset:</strong> <span id="print-chk-obj-profile">-</span>
+            </div>
+
+            <!-- Checklist container -->
+            <div class="print-checklist-container" id="print-checklist-list">
+                <!-- Checklist items printed dynamically by app.js -->
+            </div>
+
+            <!-- Notes lines -->
+            <div class="print-section print-notes-lines-section">
+                <h3>Notizen, Beobachtungen und Abweichungen</h3>
+                <div class="print-note-line"></div>
+                <div class="print-note-line"></div>
+                <div class="print-note-line"></div>
+                <div class="print-note-line"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Settings Modal -->
+    <div class="modal-overlay hidden" id="modal-settings">
+        <div class="glass-panel modal-container">
+            <div class="modal-header">
+                <h3>3D-Druck-Presets verwalten</h3>
+                <button class="btn-close-modal" id="btn-close-settings">✕</button>
+            </div>
+            <div class="modal-body" style="overflow-y: auto; max-height: 70vh; padding-right: 0.75rem;">
+                <div class="profile-list-container">
+                    <h4>3D-Druck-Presets</h4>
+                    <div class="modal-profile-list" id="modal-profile-list">
+                        <!-- Dynamically filled -->
+                    </div>
+                </div>
+                <div class="profile-form-container">
+                    <h4>Neues 3D-Druck-Preset anlegen</h4>
+                    <form id="form-new-profile">
+                        <div class="form-group">
+                            <label for="prof-name">Preset-Name</label>
+                            <input type="text" id="prof-name" class="form-input" placeholder="z. B. Ultra-Fein PLA"
+                                required>
+                        </div>
+                        <div class="form-group-row" style="margin-top: 0.5rem;">
+                            <div class="form-group">
+                                <label for="prof-material">Material</label>
+                                <select id="prof-material" class="form-select" style="padding: 0.5rem 0.8rem;">
+                                    <option value="PLA">PLA</option>
+                                    <option value="PETG">PETG</option>
+                                    <option value="TPU">TPU</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="prof-scale">Skalierung</label>
+                                <select id="prof-scale" class="form-select" style="padding: 0.5rem 0.8rem;">
+                                    <option value="1:1">1:1 (Originalgrösse)</option>
+                                    <option value="2:1">2:1 (2x Vergrösserung)</option>
+                                    <option value="5:1">5:1 (5x Vergrösserung)</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group-row" style="margin-top: 0.5rem;">
+                            <div class="form-group">
+                                <label for="prof-weight">Zielgewicht</label>
+                                <select id="prof-weight" class="form-select" style="padding: 0.5rem 0.8rem;">
+                                    <option value="">Kein Zielgewicht</option>
+                                    <option value="20">20g (Leichtbau)</option>
+                                    <option value="50">50g (Standard)</option>
+                                    <option value="75">75g (Mittelschwer)</option>
+                                    <option value="100">100g (Massiv)</option>
+                                    <option value="250">250g (Schwer)</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="prof-accessories">Zusatzteile / Kommentare</label>
+                                <input type="text" id="prof-accessories" class="form-input"
+                                    placeholder="z. B. Standfuss" style="padding: 0.5rem 0.8rem;">
+                            </div>
+                        </div>
+                        <div class="form-group" style="margin-top: 0.5rem;">
+                            <label>Haptischer Fokus</label>
+                            <div
+                                style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.4rem; margin-top: 0.25rem;">
+                                <label
+                                    style="display: flex; align-items: center; gap: 0.35rem; font-size: 0.775rem; text-transform: none; font-weight: normal; cursor: pointer; user-select: none;">
+                                    <input type="checkbox" class="prof-haptic-cb" value="Oberflächenstruktur/Textur"
+                                        style="accent-color: var(--accent-gold); width: 14px; height: 14px;">
+                                    <span>Oberfläche / Textur</span>
+                                </label>
+                                <label
+                                    style="display: flex; align-items: center; gap: 0.35rem; font-size: 0.775rem; text-transform: none; font-weight: normal; cursor: pointer; user-select: none;">
+                                    <input type="checkbox" class="prof-haptic-cb" value="Gewicht/Massendichte"
+                                        style="accent-color: var(--accent-gold); width: 14px; height: 14px;">
+                                    <span>Gewicht / Dichte</span>
+                                </label>
+                                <label
+                                    style="display: flex; align-items: center; gap: 0.35rem; font-size: 0.775rem; text-transform: none; font-weight: normal; cursor: pointer; user-select: none;">
+                                    <input type="checkbox" class="prof-haptic-cb"
+                                        value="Mechanische Belastbarkeit (Häufiges Anfassen)"
+                                        style="accent-color: var(--accent-gold); width: 14px; height: 14px;">
+                                    <span>Belastbarkeit</span>
+                                </label>
+                                <label
+                                    style="display: flex; align-items: center; gap: 0.35rem; font-size: 0.775rem; text-transform: none; font-weight: normal; cursor: pointer; user-select: none;">
+                                    <input type="checkbox" class="prof-haptic-cb" value="Mehrfarbig"
+                                        style="accent-color: var(--accent-gold); width: 14px; height: 14px;">
+                                    <span>Mehrfarbig</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group" style="margin-top: 0.5rem;">
+                            <label>Spezielle Druck-Einstellungen</label>
+                            <div style="display: grid; grid-template-columns: 1fr; gap: 0.4rem; margin-top: 0.25rem;">
+                                <label
+                                    style="display: flex; align-items: center; gap: 0.35rem; font-size: 0.775rem; text-transform: none; font-weight: normal; cursor: pointer; user-select: none;">
+                                    <input type="checkbox" id="prof-high-infill"
+                                        style="accent-color: var(--accent-gold); width: 14px; height: 14px;">
+                                    <span>Erhöhtes Infill (Füllung)</span>
+                                </label>
+                                <label
+                                    style="display: flex; align-items: center; gap: 0.35rem; font-size: 0.775rem; text-transform: none; font-weight: normal; cursor: pointer; user-select: none;">
+                                    <input type="checkbox" id="prof-force-pause"
+                                        style="accent-color: var(--accent-gold); width: 14px; height: 14px;">
+                                    <span>Pause bei 50% Druckhöhe (z. B. für Sandbefüllung)</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group" style="margin-top: 0.5rem;">
+                            <label for="prof-desc">Beschreibung & Grund der Anlegung des 3D-Druck-Presets</label>
+                            <textarea id="prof-desc" class="form-input"
+                                placeholder="Wann soll dieses 3D-Druck-Preset verwendet werden?"
+                                style="resize: none; height: 50px; padding: 0.5rem 0.8rem;" required></textarea>
+                        </div>
+                        <div class="form-group" style="margin-top: 0.5rem;">
+                            <label>Expert:in auswählen</label>
+                            <div style="display: flex; gap: 1rem; margin-top: 0.4rem; justify-content: center;">
+                                <label
+                                    style="display: flex; flex-direction: column; align-items: center; cursor: pointer; padding: 0.4rem 0.6rem; border-radius: 8px; border: 2px solid transparent; transition: border-color 0.2s;">
+                                    <input type="radio" name="prof-expert" value="Markus" style="display: none;" />
+                                    <img src="images/markus_avatar.png" width="48" height="48" alt="Markus"
+                                        style="border-radius: 50%; image-rendering: pixelated; border: 2px solid #ccc;" />
+                                    <span
+                                        style="font-size: 0.75rem; margin-top: 0.25rem; font-weight: 600;">Markus</span>
+                                </label>
+                                <label
+                                    style="display: flex; flex-direction: column; align-items: center; cursor: pointer; padding: 0.4rem 0.6rem; border-radius: 8px; border: 2px solid transparent; transition: border-color 0.2s;">
+                                    <input type="radio" name="prof-expert" value="Florian" style="display: none;" />
+                                    <img src="images/florian_avatar.png" width="48" height="48" alt="Florian"
+                                        style="border-radius: 50%; image-rendering: pixelated; border: 2px solid #ccc;" />
+                                    <span
+                                        style="font-size: 0.75rem; margin-top: 0.25rem; font-weight: 600;">Florian</span>
+                                </label>
+                                <label
+                                    style="display: flex; flex-direction: column; align-items: center; cursor: pointer; padding: 0.4rem 0.6rem; border-radius: 8px; border: 2px solid transparent; transition: border-color 0.2s;">
+                                    <input type="radio" name="prof-expert" value="Sabrina" style="display: none;" />
+                                    <img src="images/sabrina_avatar.png" width="48" height="48" alt="Sabrina"
+                                        style="border-radius: 50%; image-rendering: pixelated; border: 2px solid #ccc;" />
+                                    <span
+                                        style="font-size: 0.75rem; margin-top: 0.25rem; font-weight: 600;">Sabrina</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group" style="margin-top: 0.5rem;">
+                            <label for="prof-comment">Kommentar an Expert:in</label>
+                            <textarea id="prof-comment" class="form-input"
+                                placeholder="Zusätzliche Anmerkungen für den Experten"
+                                style="resize: none; height: 60px; padding: 0.5rem 0.8rem;"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-new" style="margin-top: 0.75rem; width: 100%;">
+                            3D-Druck-Preset speichern & Expert:in benachrichtigen
+                        </button>
+                    </form>
+
+                    <!-- Full Bambu Lab Preset Preview -->
+                    <div id="preset-section" style="margin-top: 1rem; display: none;">
+                        <h4 style="margin-bottom: 0.4rem;">📄 Generiertes Bambu Lab Preset</h4>
+                        <div id="full-preset-preview-container"
+                            style="max-height: 250px; overflow: auto; background: #1e1e2e; color: #a6e3a1; padding: 0.75rem; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); font-family: 'Courier New', monospace;">
+                            <pre id="preset-preview"
+                                style="margin: 0; font-size: 0.75rem; white-space: pre-wrap; word-break: break-all;">Preset-Vorschau wird hier angezeigt…</pre>
+                        </div>
+                        <button type="button" id="btn-download-preset" class="btn btn-new"
+                            style="margin-top: 0.5rem; width: 100%;" disabled>
+                            ⬇ Preset als .json herunterladen
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+
+</html>
