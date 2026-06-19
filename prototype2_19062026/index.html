@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Filament-Skalierungsrechner für 3D-Drucke. Berechnet die optimale Skalierung basierend auf dem Filamentverbrauch nach der kubischen Gewichtsformel.">
+    <title>Filament-Skalierungsrechner | Change3D</title>
+    <!-- Premium Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Ambient Holographic Blur Background -->
+    <div class="bg-blobs">
+        <div class="blob blob-green"></div>
+        <div class="blob blob-gold"></div>
+        <div class="grid-overlay"></div>
+    </div>
+
+    <div class="app-container">
+        <!-- Sleek Header -->
+        <header class="app-header glass-panel">
+            <div class="brand">
+                <div class="brand-title">
+                    <span class="badge-main">Change3D</span>
+                    <h1>Filament-Skalierungsrechner</h1>
+                </div>
+                <p class="subtitle">Präzise Gewichtsanpassung für 3D-Druck-Reproduktionen</p>
+            </div>
+            
+            <div class="header-right">
+                <div class="partner-logos">
+                    <div class="partner-logo-container" title="Change3D">
+                        <img src="../change3dlogo.png" alt="Change3D Logo" class="partner-logo">
+                    </div>
+                    <div class="partner-logo-container" title="FH Graubünden">
+                        <img src="../fhgrlogo.png" alt="FH Graubünden Logo" class="partner-logo">
+                    </div>
+                    <div class="partner-logo-container" title="Rätisches Museum">
+                        <img src="../raetisches-muesum.png" alt="Rätisches Museum Logo" class="partner-logo">
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Workspace Grid -->
+        <main class="main-layout">
+            <!-- Left Column: Input Form & Simulation -->
+            <section class="control-panel flex-column">
+                
+                <!-- Main Calculator Card -->
+                <div class="glass-panel card">
+                    <div class="card-header">
+                        <div class="card-icon">⚖️</div>
+                        <div>
+                            <h2>Gewichts-Skalierung</h2>
+                            <p>Berechnung der Ziel-Skalierung über Slicing-Iterationen</p>
+                        </div>
+                    </div>
+                    
+                    <div class="form-body">
+                        <!-- Object Designation -->
+                        <div class="form-group">
+                            <label for="inp-object-name">Modell-Bezeichnung</label>
+                            <input type="text" id="inp-object-name" class="form-input" placeholder="z. B. Bronzezeitliche Nadel (Gussform)" value="Historisches Objekt">
+                        </div>
+
+                        <!-- Step 1 inputs -->
+                        <div class="form-group-row">
+                            <div class="form-group">
+                                <label for="inp-weight-current">
+                                    Aktuelles Gewicht (G<sub>0</sub>)
+                                    <span class="label-info-icon" title="Aktueller Filamentverbrauch laut Bambu Studio in Gramm">?</span>
+                                </label>
+                                <div class="input-with-unit">
+                                    <input type="number" id="inp-weight-current" class="form-input" placeholder="z. B. 92" min="0.1" step="0.1" required>
+                                    <span class="unit-badge">g</span>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="inp-weight-target">
+                                    Gewünschtes Gewicht (G<sub>z</sub>)
+                                    <span class="label-info-icon" title="Gewünschtes Filamentgewicht des fertigen Druckmodells">?</span>
+                                </label>
+                                <div class="input-with-unit">
+                                    <input type="number" id="inp-weight-target" class="form-input" placeholder="z. B. 150" min="0.1" step="0.1" required>
+                                    <span class="unit-badge">g</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group-row">
+                            <div class="form-group">
+                                <label for="inp-scale-current">
+                                    Aktuelle Skalierung (S<sub>0</sub>)
+                                </label>
+                                <div class="input-with-unit">
+                                    <input type="number" id="inp-scale-current" class="form-input" value="100" min="1" step="0.1" required>
+                                    <span class="unit-badge">%</span>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="inp-material">Filament-Dichte</label>
+                                <select id="inp-material" class="form-select">
+                                    <option value="1.24" selected>PLA (ca. 1.24 g/cm³)</option>
+                                    <option value="1.27">PETG (ca. 1.27 g/cm³)</option>
+                                    <option value="1.04">ABS/ASA (ca. 1.04 g/cm³)</option>
+                                    <option value="1.21">TPU (ca. 1.21 g/cm³)</option>
+                                    <option value="1.43">PET-CF (ca. 1.43 g/cm³)</option>
+                                    <option value="custom">Benutzerdefiniert...</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Custom density inputs, hidden by default -->
+                        <div class="form-group hidden" id="custom-density-group">
+                            <label for="inp-custom-density">Eigene Filament-Dichte</label>
+                            <div class="input-with-unit">
+                                <input type="number" id="inp-custom-density" class="form-input" placeholder="z. B. 1.25" min="0.1" step="0.01" value="1.24">
+                                <span class="unit-badge">g/cm³</span>
+                            </div>
+                        </div>
+
+                        <!-- Interactive Range Sliders -->
+                        <div class="sliders-section">
+                            <div class="slider-group">
+                                <div class="slider-labels">
+                                    <span>Aktuelles Gewicht</span>
+                                    <span id="slider-val-current">92 g</span>
+                                </div>
+                                <input type="range" id="range-weight-current" min="1" max="500" value="92" class="range-slider">
+                            </div>
+                            <div class="slider-group">
+                                <div class="slider-labels">
+                                    <span>Gewünschtes Gewicht</span>
+                                    <span id="slider-val-target">150 g</span>
+                                </div>
+                                <input type="range" id="range-weight-target" min="1" max="500" value="150" class="range-slider">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Simulation & Volume Card -->
+                <div class="glass-panel card">
+                    <div class="card-header">
+                        <div class="card-icon">💻</div>
+                        <div>
+                            <h2>STL-Volumensimulation</h2>
+                            <p>Berechnung über das geometrische Netto-Volumen</p>
+                        </div>
+                    </div>
+                    
+                    <div class="form-body">
+                        <p class="section-desc">
+                            Wenn Sie das exakte Volumen der STL-Datei kennen, können Sie das theoretische Gewicht bei 100% Infill berechnen.
+                        </p>
+
+                        <div class="form-group">
+                            <label for="inp-stl-volume">STL-Volumen</label>
+                            <div class="input-with-unit">
+                                <input type="number" id="inp-stl-volume" class="form-input" placeholder="Volumen eingeben (z. B. 121)" min="0.1" step="0.1">
+                                <span class="unit-badge">cm³</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="range-infill">
+                                Geschätzter Infill-Faktor: <span id="val-infill">20%</span>
+                            </label>
+                            <input type="range" id="range-infill" min="5" max="100" value="20" class="range-slider">
+                        </div>
+
+                        <!-- Info message on Slicing vs. Simulation -->
+                        <div class="info-alert">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <line x1="12" y1="16" x2="12" y2="12"></line>
+                                <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                            </svg>
+                            <div class="alert-content">
+                                <strong>Hinweis zur Genauigkeit:</strong> Bei typischen Infill-Werten (10-30%) ist die von Bambu Studio berechnete Filamentmenge (über den Rechner oben) deutlich präziser, da Wandlinien, Top-/Bottom-Layer sowie Support-Einflüsse geometrisch korrekt simuliert werden.
+                            </div>
+                        </div>
+
+                        <!-- Computed Simulated Mass -->
+                        <div class="simulation-result">
+                            <span>Theoretische Masse (bei <span id="sim-infill-display">20%</span> Infill):</span>
+                            <strong id="simulated-mass-val">0.0 g</strong>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Right Column: Visualizer & Calculated Result -->
+            <section class="visualizer-panel flex-column">
+                
+                <!-- Main Result Display Card -->
+                <div class="glass-panel card card-result highlight-border">
+                    <div class="result-header">
+                        <span class="badge-result">Betechnung abgeschlossen</span>
+                        <h2>Neue Ziel-Skalierung</h2>
+                    </div>
+
+                    <div class="result-content">
+                        <div class="result-primary">
+                            <span class="result-label">Empfohlene Skalierung (S<sub>z</sub>)</span>
+                            <div class="result-value-container">
+                                <span class="result-value" id="result-scale">117.7</span>
+                                <span class="result-percent">%</span>
+                            </div>
+                        </div>
+
+                        <div class="result-details-grid">
+                            <div class="detail-box">
+                                <span class="detail-label">Multiplikator</span>
+                                <span class="detail-value" id="result-multiplier">1.177x</span>
+                            </div>
+                            <div class="detail-box">
+                                <span class="detail-label">Gewichtsänderung</span>
+                                <span class="detail-value text-green" id="result-delta-weight">+58.0 g</span>
+                            </div>
+                            <div class="detail-box" style="grid-column: span 2;">
+                                <span class="detail-label">Volumen-Skalierungsfaktor</span>
+                                <span class="detail-value" id="result-volume-factor">1.630x</span>
+                            </div>
+                        </div>
+
+                        <!-- Quick actions -->
+                        <div class="result-actions">
+                            <button class="btn btn-primary btn-block" id="btn-copy-scale">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                                <span>Wert in Bambu Studio kopieren</span>
+                            </button>
+                            
+                            <button class="btn btn-secondary" id="btn-save-project" title="Zu Historie hinzufügen">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
+                                    <polyline points="17 21 17 13 7 13 7 21"></polyline>
+                                    <polyline points="7 3 7 8 15 8"></polyline>
+                                </svg>
+                                Speichern
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3D Interactive Scale Visualizer -->
+                <div class="glass-panel card card-3d-visualizer">
+                    <div class="visualizer-header">
+                        <h3>Interaktive Skalierungs-Vorschau</h3>
+                        <span class="badge-tech">Proportionaler 3D-Körper</span>
+                    </div>
+
+                    <!-- 3D Scene Viewport -->
+                    <div class="viewport-3d" id="viewport-3d">
+                        <!-- Ambient Grid in 3D -->
+                        <div class="scene-grid"></div>
+
+                        <!-- 3D Rotator Wrapper -->
+                        <div class="scene-3d-wrapper">
+                            <div class="object-3d-container" id="object-3d-container">
+                                <!-- Interactive 3D Model (represented as stylized museum vase/amphora) -->
+                                <div class="amphora-model">
+                                    <div class="amphora-neck"></div>
+                                    <div class="amphora-handles">
+                                        <div class="handle handle-left"></div>
+                                        <div class="handle handle-right"></div>
+                                    </div>
+                                    <div class="amphora-body">
+                                        <div class="ring-detail"></div>
+                                        <div class="ring-detail border-bottom"></div>
+                                    </div>
+                                    <div class="amphora-base"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Interactive scale labels overlaying the 3D space -->
+                        <div class="viewport-stats">
+                            <div class="stat-badge">
+                                <span>Skalierung:</span>
+                                <strong id="val-preview-scale">100.0%</strong>
+                            </div>
+                            <div class="stat-badge">
+                                <span>Volumen:</span>
+                                <strong id="val-preview-vol">100%</strong>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="visualizer-footer-controls">
+                        <span class="control-help-text">Verwenden Sie die Maus, um das Objekt in 3D zu rotieren</span>
+                        <div class="visualizer-toggle-btn" id="btn-rotate-toggle" title="Auto-Rotation an/aus">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"></path>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Slicing Workflow Guide (Horizontal Layout) -->
+        <section class="glass-panel card workflow-guide-card">
+            <div class="card-header">
+                <div class="card-icon" style="color: var(--accent-green)">📋</div>
+                <div>
+                    <h2>Bambu Studio Slicing-Iterationen</h2>
+                    <p>Praxis-Leitfaden für extrem präzise Druckergebnisse</p>
+                </div>
+            </div>
+
+            <div class="steps-grid">
+                <div class="step-card">
+                    <div class="step-num">1</div>
+                    <h4>Erster Slice-Durchlauf</h4>
+                    <p>Importieren Sie Ihr Objekt in Bambu Studio. Wählen Sie Ihr gewünschtes Profil (Infill, Wände etc.) und slicen Sie das Modell bei standardmäßiger 100% Skalierung.</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-num">2</div>
+                    <h4>Rechner füttern</h4>
+                    <p>Tragen Sie das berechnete Filamentgewicht (in Gramm) als <strong>Aktuelles Gewicht (G<sub>0</sub>)</strong> ein. Legen Sie Ihr <strong>Zielgewicht (G<sub>z</sub>)</strong> fest.</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-num">3</div>
+                    <h4>Wert übertragen</h4>
+                    <p>Kopieren Sie den errechneten Skalierungswert (<strong>S<sub>z</sub></strong>) aus dem Rechner und tragen Sie diesen in Bambu Studio als Skalierung ein.</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-num">4</div>
+                    <h4>Finaler Slice</h4>
+                    <p>Slicen Sie das Modell in Bambu Studio erneut. Da die Filamentmenge nahezu perfekt linear zum Volumen skaliert, weicht Ihr Modell nun maximal 1-2g ab.</p>
+                </div>
+            </div>
+
+            <div class="formula-box">
+                <div class="formula-title font-title">Mathematische Grundlage:</div>
+                <div class="formula-math">
+                    S<sub>z</sub> = S<sub>0</sub> &middot; <sup>3</sup>&radic;(<span class="formula-highlight">G<sub>z</sub></span> / <span class="formula-highlight-alt">G<sub>0</sub></span>)
+                </div>
+                <p class="formula-desc">
+                    Da das Gewicht proportional zum dreidimensionalen Volumen wächst ($Gewicht \propto Skalierung^3$), wird zur Berechnung des Skalierungsfaktors die Kubikwurzel (Dritte Wurzel) des Gewichtsverhältnisses gezogen.
+                </p>
+            </div>
+        </section>
+
+        <!-- Saved Configurations History Table -->
+        <section class="glass-panel card history-card">
+            <div class="card-header-with-actions">
+                <div class="card-header-title">
+                    <div class="card-icon" style="color: var(--accent-gold)">📂</div>
+                    <div>
+                        <h2>Modell-Historie</h2>
+                        <p>Gespeicherte Skalierungen und Protokolle</p>
+                    </div>
+                </div>
+                <div class="history-actions">
+                    <button class="btn btn-secondary btn-sm" id="btn-export-csv">CSV-Export</button>
+                    <button class="btn btn-secondary btn-sm" id="btn-print-page">Protokoll drucken</button>
+                    <button class="btn btn-secondary btn-sm text-red" id="btn-clear-history">Historie löschen</button>
+                </div>
+            </div>
+
+            <div class="table-container">
+                <table class="history-table" id="history-table">
+                    <thead>
+                        <tr>
+                            <th>Datum</th>
+                            <th>Objekt</th>
+                            <th>Material</th>
+                            <th>Ist-Gewicht (G<sub>0</sub>)</th>
+                            <th>Soll-Gewicht (G<sub>z</sub>)</th>
+                            <th>Urspr. Skalierung (S<sub>0</sub>)</th>
+                            <th>Ziel-Skalierung (S<sub>z</sub>)</th>
+                            <th>Faktor</th>
+                            <th>Aktion</th>
+                        </tr>
+                    </thead>
+                    <tbody id="history-tbody">
+                        <!-- Dynamic content will be inserted by JS -->
+                        <tr class="empty-row">
+                            <td colspan="9">Keine gespeicherten Berechnungen vorhanden. Füllen Sie die Felder aus und klicken Sie auf "Speichern".</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Sleek Footer -->
+        <footer class="app-footer">
+            <p>&copy; 2026 Change3D Forschungsprojekt | FH Graubünden & Rätisches Museum</p>
+            <div class="footer-badges">
+                <span class="badge-status">Status: Bereit</span>
+                <span class="badge-tech">Bambu Lab X2D optimiert</span>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Notification Toast -->
+    <div class="toast hidden" id="toast-notification">
+        <span id="toast-message">Wert in die Zwischenablage kopiert!</span>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

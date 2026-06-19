@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Change3D - Workflow Assistent</title>
+    <!-- Use a modern Google Font like Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Include CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Abstract Background for Glassmorphism -->
+    <div class="bg-shape shape1"></div>
+    <div class="bg-shape shape2"></div>
+    <div class="bg-shape shape3"></div>
+
+    <div class="app-container">
+        <!-- Header -->
+        <header class="glass-panel header">
+            <div class="header-left">
+                <div>
+                    <h1>3D-Druck Workflow Assistent</h1>
+                    <div class="subtitle-container">
+                        <p class="subtitle">Schritt-für-Schritt Anleitung für</p>
+                        <img src="bambulablogo.png" alt="Bambu Lab Logo" class="subtitle-logo">
+                        <span class="subtitle-badge">X2D</span>
+                    </div>
+                </div>
+            </div>
+            <div class="header-right">
+                <div class="partner-logos">
+                    <img src="change3dlogo.png" alt="Change3D Logo" class="partner-logo">
+                    <img src="fhgrlogo.png" alt="FH Graubünden Logo" class="partner-logo">
+                    <img src="raetisches-muesum.png" alt="Rätisches Museum Logo" class="partner-logo">
+                </div>
+                <div class="progress-container">
+                    <span class="progress-text">Fortschritt</span>
+                    <span class="progress-numbers"><span id="current-step-display">1</span> / 8</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Stepper -->
+        <nav class="glass-panel stepper-container" aria-label="Progress">
+            <ul class="stepper" id="stepper">
+                <!-- Injected via JS -->
+            </ul>
+        </nav>
+
+        <!-- Main Content Layout -->
+        <main class="content-layout">
+            
+            <!-- Left Side: Dynamic Content -->
+            <div class="main-column">
+                <!-- Title Card -->
+                <div class="glass-panel title-card">
+                    <div class="title-icon-wrapper" id="phase-icon">
+                        <!-- Icon injected via JS -->
+                    </div>
+                    <div class="title-info">
+                        <span class="phase-badge" id="phase-badge">Scan-Vorbereitung</span>
+                        <h2 id="phase-title">Objekt für 3D-Scan vorbereiten</h2>
+                        <p id="phase-description">Optimale Bedingungen für einen erfolgreichen Scan schaffen</p>
+                    </div>
+                </div>
+
+                <!-- Content Area (Tasks, Uploads, Options) -->
+                <div class="glass-panel content-card" id="content-area">
+                    <h3 id="content-title">Aufgaben</h3>
+                    <div id="dynamic-content">
+                        <!-- Content injected via JS -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Side: Sidebar -->
+            <aside class="sidebar-column">
+                <!-- Tips & Tricks -->
+                <div class="glass-panel tips-card">
+                    <div class="card-header">
+                        <svg class="icon-yellow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="9" y1="18" x2="15" y2="18"></line>
+                            <line x1="10" y1="22" x2="14" y2="22"></line>
+                            <path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"></path>
+                        </svg>
+                        <h3>Tipps & Tricks</h3>
+                    </div>
+                    <ul class="tips-list" id="tips-list">
+                        <!-- Injected via JS -->
+                    </ul>
+                </div>
+
+                <!-- Help -->
+                <div class="glass-panel help-card">
+                    <div class="card-header">
+                        <svg class="icon-blue" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+                            <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                        </svg>
+                        <h3>Hilfe benötigt?</h3>
+                    </div>
+                    <div class="help-actions" id="help-form-container">
+                        <textarea class="form-textarea" placeholder="Problem beschreiben..." id="help-text" rows="3"></textarea>
+                        
+                        <div class="help-upload-wrapper" style="margin-bottom: 0.75rem;">
+                            <input type="file" id="help-file" class="hidden-input" accept="image/*" onchange="updateHelpFileName(this)">
+                            <label for="help-file" class="btn btn-secondary btn-block" style="font-size: 0.875rem; padding: 0.5rem 1rem;" id="help-file-label">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                                    <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                                    <polyline points="21 15 16 10 5 21"></polyline>
+                                </svg>
+                                <span id="help-file-name">Bild anhängen</span>
+                            </label>
+                        </div>
+
+                        <button class="btn btn-primary btn-block" id="btn-send-help" onclick="submitHelp()">Problem melden</button>
+                    </div>
+                </div>
+            </aside>
+        </main>
+
+        <!-- Footer / Navigation Controls -->
+        <footer class="glass-panel footer-nav">
+            <button class="btn btn-secondary" id="btn-back" disabled>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="19" y1="12" x2="5" y2="12"></line>
+                    <polyline points="12 19 5 12 12 5"></polyline>
+                </svg>
+                Zurück
+            </button>
+            
+            <div class="validation-message" id="validation-message">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" y1="8" x2="12" y2="12"></line>
+                    <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                </svg>
+                <span>Bitte alle Aufgaben abhaken</span>
+            </div>
+
+            <div class="footer-right">
+                <button class="btn btn-ghost" id="btn-skip">
+                    Überspringen
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                        <polyline points="12 5 19 12 12 19"></polyline>
+                    </svg>
+                </button>
+                <button class="btn btn-primary" id="btn-next">
+                    Weiter
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                        <polyline points="12 5 19 12 12 19"></polyline>
+                    </svg>
+                </button>
+            </div>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

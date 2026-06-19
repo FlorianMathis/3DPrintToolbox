@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Change3D Einstiegsportal. Übersicht und Zugang zu den 3D-Reproduktions- und Skalierungs-Tools für das Rätische Museum und die FH Graubünden.">
+    <title>Change3D Portal | FH Graubünden & Rätisches Museum</title>
+    <!-- Premium Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Holographic Background Blobs -->
+    <div class="bg-blobs">
+        <div class="blob blob-blue"></div>
+        <div class="blob blob-gold"></div>
+        <div class="blob blob-green"></div>
+        <div class="grid-overlay"></div>
+    </div>
+
+    <div class="portal-container">
+        <!-- Sleek Brand Header -->
+        <header class="portal-header glass-panel">
+            <div class="brand-info">
+                <span class="badge-main">Innosuisse Forschungsprojekt</span>
+                <h1>Change3D Portal</h1>
+                <p class="subtitle">Systemplattformen für die haptische 3D-Reproduktion musealer Kulturgüter</p>
+            </div>
+            
+            <div class="partner-logos">
+                <div class="partner-logo-container" title="Change3D">
+                    <img src="../change3dlogo.png" alt="Change3D Logo" class="partner-logo">
+                </div>
+                <div class="partner-logo-container" title="FH Graubünden">
+                    <img src="../fhgrlogo.png" alt="FH Graubünden Logo" class="partner-logo">
+                </div>
+                <div class="partner-logo-container" title="Rätisches Museum">
+                    <img src="../raetisches-muesum.png" alt="Rätisches Museum Logo" class="partner-logo">
+                </div>
+            </div>
+        </header>
+
+        <!-- Portal Grid with platforms -->
+        <main class="portal-grid">
+            
+            <!-- Platform 1: 3D Workflow Assistant -->
+            <a href="../prototype1_15062026/index.html" class="portal-card glass-panel card-workflow">
+                <div class="card-glow-bg"></div>
+                <div class="card-content">
+                    <div class="card-icon-wrapper">
+                        <!-- AI / 3D-Object Scan Icon -->
+                        <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
+                        </svg>
+                    </div>
+                    
+                    <div class="card-meta">
+                        <span class="badge-tech">Plattform 1</span>
+                        <span class="badge-status-active">Aktiv</span>
+                    </div>
+                    
+                    <h2>3D-Workflow-Assistent</h2>
+                    <p class="card-description">
+                        KI-gestützter Leitfaden zur Reproduktion antiker Objekte des Rätischen Museums. Führt Sie Schritt für Schritt durch die Objekterfassung, Preset-Auswahl und generiert optimale Slicing-Parameter für den Bambu Lab X2D.
+                    </p>
+                    
+                    <div class="card-tags">
+                        <span>Checklisten</span>
+                        <span>Druck-Presets</span>
+                        <span>Museums-KI</span>
+                        <span>Workflow</span>
+                    </div>
+                    
+                    <div class="card-action-link">
+                        <span>Portal öffnen</span>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                            <polyline points="9 18 15 12 9 6"></polyline>
+                        </svg>
+                    </div>
+                </div>
+            </a>
+
+            <!-- Platform 2: Filament Scaling Calculator -->
+            <a href="../prototype2_19062026/index.html" class="portal-card glass-panel card-calculator">
+                <div class="card-glow-bg"></div>
+                <div class="card-content">
+                    <div class="card-icon-wrapper">
+                        <!-- Scale / Math Balance Icon -->
+                        <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="12" y1="5" x2="12" y2="19"></line>
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                            <circle cx="12" cy="12" r="4"></circle>
+                        </svg>
+                    </div>
+                    
+                    <div class="card-meta">
+                        <span class="badge-tech">Plattform 2</span>
+                        <span class="badge-status-active">Aktiv</span>
+                    </div>
+                    
+                    <h2>Filament-Skalierungsrechner</h2>
+                    <p class="card-description">
+                        Präzisions-Kalkulator zur exakten Anpassung des Modellgewichts. Berechnet die dreidimensionale Skalierung basierend auf der kubischen Wurzelformel und gleicht sie mit Filamentdichten und STL-Volumen-Simulanten ab.
+                    </p>
+                    
+                    <div class="card-tags">
+                        <span>Kubische Wurzel</span>
+                        <span>Gewichtsanpassung</span>
+                        <span>Dichte-Simulation</span>
+                        <span>Präzision</span>
+                    </div>
+                    
+                    <div class="card-action-link">
+                        <span>Rechner öffnen</span>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                            <polyline points="9 18 15 12 9 6"></polyline>
+                        </svg>
+                    </div>
+                </div>
+            </a>
+
+        </main>
+
+        <!-- Project Info Alert Box -->
+        <section class="glass-panel info-section">
+            <div class="info-header">
+                <span class="info-icon">💡</span>
+                <h3>Über das Change3D Forschungsprojekt</h3>
+            </div>
+            <p>
+                Das Projekt <strong>Change3D</strong> wird von der Innosuisse gefördert und befasst sich mit der Erforschung innovativer haptischer Vermittlungskonzepte in Museen. Durch die Kombination von 3D-Scantechnologien, präzisen Materialsimulationen und modernem FDM-3D-Druck (Bambu Lab X2D) werden originalgetreue haptische Repliken historischer Exponate geschaffen. Die hier angebotenen Applikationen digitalisieren und optimieren den technischen Reproduktions-Workflow.
+            </p>
+        </section>
+
+        <!-- Footer -->
+        <footer class="portal-footer">
+            <p>&copy; 2026 Change3D | FH Graubünden & Rätisches Museum Chur</p>
+            <p class="footer-note">Gefördert durch Innosuisse (Projekt-Nr. 2026-Change3D)</p>
+        </footer>
+    </div>
+
+</body>
+</html>
