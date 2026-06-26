@@ -7,21 +7,25 @@ document.addEventListener('DOMContentLoaded', () => {
     const inpMaterial = document.getElementById('inp-material');
     const inpCustomDensity = document.getElementById('inp-custom-density');
     const customDensityGroup = document.getElementById('custom-density-group');
+    const weightRefPure = document.getElementById('weight-ref-pure');
+    const weightRefTotal = document.getElementById('weight-ref-total');
+    const postProcessingGroup = document.getElementById('post-processing-group');
+    const inpWeightPost = document.getElementById('inp-weight-post');
+    const targetPureCalcInfo = document.getElementById('target-pure-calc-info');
 
     // DOM Elements - Sliders
     const rangeWeightCurrent = document.getElementById('range-weight-current');
     const rangeWeightTarget = document.getElementById('range-weight-target');
-    const rangeInfill = document.getElementById('range-infill');
     
     // Slider values indicators
     const sliderValCurrent = document.getElementById('slider-val-current');
     const sliderValTarget = document.getElementById('slider-val-target');
-    const valInfill = document.getElementById('val-infill');
-    const simInfillDisplay = document.getElementById('sim-infill-display');
 
-    // Simulation
-    const inpStlVolume = document.getElementById('inp-stl-volume');
-    const simulatedMassVal = document.getElementById('simulated-mass-val');
+    // Formel-Schnellrechner Elements
+    const quickG0 = document.getElementById('quick-g0');
+    const quickGz = document.getElementById('quick-gz');
+    const quickS0 = document.getElementById('quick-s0');
+    const quickResultVal = document.getElementById('quick-result-val');
 
     // Results Display
     const resultScale = document.getElementById('result-scale');
@@ -50,6 +54,36 @@ document.addEventListener('DOMContentLoaded', () => {
     const toast = document.getElementById('toast-notification');
     const toastMessage = document.getElementById('toast-message');
 
+    // Method Switcher Elements
+    const radioMethodA = document.getElementById('radio-method-a');
+    const radioMethodB = document.getElementById('radio-method-b');
+    const panelOptionA = document.getElementById('panel-option-a');
+    const panelOptionB = document.getElementById('panel-option-b');
+    const cardMethodA = document.getElementById('card-method-a');
+    const cardMethodB = document.getElementById('card-method-b');
+
+    // Option A DOM Elements
+    const optAVolume = document.getElementById('opt-a-volume');
+    const optAMaterial = document.getElementById('opt-a-material');
+    const optACustomDensity = document.getElementById('opt-a-custom-density');
+    const optACustomDensityGroup = document.getElementById('opt-a-custom-density-group');
+    const optAWalls = document.getElementById('opt-a-walls');
+    const optASliderInfill = document.getElementById('opt-a-slider-infill');
+    const optASliderInfillVal = document.getElementById('opt-a-slider-infill-val');
+    const optATopLayers = document.getElementById('opt-a-top-layers');
+    const optABottomLayers = document.getElementById('opt-a-bottom-layers');
+    const optALayerHeight = document.getElementById('opt-a-layer-height');
+    const optALineWidth = document.getElementById('opt-a-line-width');
+
+    const optAResultWeight = document.getElementById('opt-a-result-weight');
+    const optAResultVWalls = document.getElementById('opt-a-result-v-walls');
+    const optAResultVTb = document.getElementById('opt-a-result-v-tb');
+    const optAResultVInfill = document.getElementById('opt-a-result-v-infill');
+
+    const optADropZone = document.getElementById('opt-a-drop-zone');
+    const optAFileInput = document.getElementById('opt-a-file-input');
+    const optAUploadStatus = document.getElementById('opt-a-upload-status');
+
     // State Variables
     let isRotating = true;
     let rotationAngle = 0;
@@ -66,14 +100,98 @@ document.addEventListener('DOMContentLoaded', () => {
     
     updateSliderValTexts();
     calculateAll();
+    calculateQuick();
+    calculateOptionA();
     loadHistory();
 
     // --- EVENT LISTENERS ---
 
+    // Method switcher
+    if (radioMethodA && radioMethodB && panelOptionA && panelOptionB) {
+        radioMethodA.addEventListener('change', toggleMethodPanel);
+        radioMethodB.addEventListener('change', toggleMethodPanel);
+    }
+
+    // Card switcher UI interactions
+    if (cardMethodA && cardMethodB) {
+        cardMethodA.addEventListener('click', () => {
+            radioMethodA.checked = true;
+            toggleMethodPanel();
+        });
+
+        cardMethodB.addEventListener('click', () => {
+            radioMethodB.checked = true;
+            toggleMethodPanel();
+        });
+    }
+
+    // Option A event listeners
+    if (optAVolume) {
+        [optAVolume, optAMaterial, optACustomDensity, optAWalls, optATopLayers, optABottomLayers, optALayerHeight, optALineWidth].forEach(el => {
+            if (el) {
+                el.addEventListener('input', () => {
+                    if (el === optAMaterial) {
+                        if (optAMaterial.value === 'custom') {
+                            optACustomDensityGroup.classList.remove('hidden');
+                        } else {
+                            optACustomDensityGroup.classList.add('hidden');
+                        }
+                    }
+                    calculateOptionA();
+                });
+            }
+        });
+
+        if (optASliderInfill) {
+            optASliderInfill.addEventListener('input', () => {
+                optASliderInfillVal.textContent = optASliderInfill.value + ' %';
+                calculateOptionA();
+            });
+        }
+
+        if (optADropZone && optAFileInput) {
+            optADropZone.addEventListener('click', () => optAFileInput.click());
+            
+            optADropZone.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                optADropZone.classList.add('dragover');
+            });
+            
+            optADropZone.addEventListener('dragleave', () => {
+                optADropZone.classList.remove('dragover');
+            });
+            
+            optADropZone.addEventListener('drop', (e) => {
+                e.preventDefault();
+                optADropZone.classList.remove('dragover');
+                if (e.dataTransfer.files.length > 0) {
+                    handleUploadedFile(e.dataTransfer.files[0]);
+                }
+            });
+            
+            optAFileInput.addEventListener('change', (e) => {
+                if (e.target.files.length > 0) {
+                    handleUploadedFile(e.target.files[0]);
+                }
+            });
+        }
+    }
+
     // Realtime Calculations on input changes
-    [inpWeightCurrent, inpWeightTarget, inpScaleCurrent, inpMaterial, inpCustomDensity].forEach(element => {
+    [inpWeightCurrent, inpWeightTarget, inpScaleCurrent, inpMaterial, inpCustomDensity, inpWeightPost].forEach(element => {
         element.addEventListener('input', () => {
             syncInputsToSliders();
+            calculateAll();
+        });
+    });
+
+    [weightRefPure, weightRefTotal].forEach(radio => {
+        radio.addEventListener('change', () => {
+            if (weightRefTotal.checked) {
+                postProcessingGroup.classList.remove('hidden');
+            } else {
+                postProcessingGroup.classList.add('hidden');
+            }
             calculateAll();
         });
     });
@@ -100,15 +218,12 @@ document.addEventListener('DOMContentLoaded', () => {
         calculateAll();
     });
 
-    // Infill Simulation range
-    rangeInfill.addEventListener('input', () => {
-        valInfill.textContent = rangeInfill.value + '%';
-        simInfillDisplay.textContent = rangeInfill.value + '%';
-        calculateMassSimulation();
+    // Formel-Schnellrechner Event Listeners
+    [quickG0, quickGz, quickS0].forEach(input => {
+        if (input) {
+            input.addEventListener('input', calculateQuick);
+        }
     });
-
-    // Volume Simulation Input
-    inpStlVolume.addEventListener('input', calculateMassSimulation);
 
     // Save calculation
     btnSaveProject.addEventListener('click', saveToHistory);
@@ -152,15 +267,50 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // Cubic Scaling Formula: S_z = S_0 * (G_z / G_0)^(1/3)
-        const scaleFactor = Math.cbrt(gz / g0);
+        // Check weight reference type and adjust target weight
+        const isTotalWeight = weightRefTotal.checked;
+        const gAdd = isTotalWeight ? parseFloat(inpWeightPost.value) || 0 : 0;
+        let targetPure = gz;
+
+        if (isTotalWeight) {
+            targetPure = gz - gAdd;
+            if (targetPure <= 0) {
+                targetPureCalcInfo.textContent = "Zusatzgewicht muss kleiner als das gewünschte Gewicht sein!";
+                targetPureCalcInfo.style.color = "var(--accent-red)";
+                resultScale.textContent = "---";
+                resultMultiplier.textContent = "---";
+                resultDeltaWeight.textContent = "---";
+                resultVolumeFactor.textContent = "---";
+                return;
+            } else {
+                targetPureCalcInfo.textContent = `Reines 3D-Druck-Zielgewicht: ${targetPure.toFixed(1)} g`;
+                targetPureCalcInfo.style.color = "var(--accent-gold)";
+            }
+        } else {
+            targetPureCalcInfo.textContent = "";
+        }
+
+        // Get target material density
+        let density = 1.24;
+        if (inpMaterial.value === 'custom') {
+            density = parseFloat(inpCustomDensity.value) || 1.24;
+        } else {
+            density = parseFloat(inpMaterial.value);
+        }
+        
+        // We assume the baseline slice (G0) was calculated using standard PLA (1.24 g/cm³)
+        const densityRef = 1.24;
+
+        // Cubic Scaling Formula with Density Adjustment: S_z = S_0 * ( (G_z_pure / G_0) * (densityRef / density) )^(1/3)
+        const volFactor = (targetPure / g0) * (densityRef / density);
+        const scaleFactor = Math.cbrt(volFactor);
         const sz = s0 * scaleFactor;
 
         // Results
         resultScale.textContent = sz.toFixed(1);
         resultMultiplier.textContent = scaleFactor.toFixed(3) + 'x';
         
-        const delta = gz - g0;
+        const delta = targetPure - g0;
         const sign = delta >= 0 ? '+' : '';
         resultDeltaWeight.textContent = `${sign}${delta.toFixed(1)} g`;
         
@@ -170,7 +320,6 @@ document.addEventListener('DOMContentLoaded', () => {
             resultDeltaWeight.className = 'detail-value text-red';
         }
 
-        const volFactor = gz / g0;
         resultVolumeFactor.textContent = volFactor.toFixed(3) + 'x';
 
         // Update visualizer state
@@ -181,28 +330,20 @@ document.addEventListener('DOMContentLoaded', () => {
         const visualScale = Math.max(0.45, Math.min(2.1, scaleFactor));
         object3DContainer.style.transform = `scale(${visualScale})`;
 
-        calculateMassSimulation();
     }
 
-    function calculateMassSimulation() {
-        const volume = parseFloat(inpStlVolume.value);
-        const infill = parseFloat(rangeInfill.value) / 100;
-        
-        let density = 1.24; // Default PLA
-        if (inpMaterial.value === 'custom') {
-            density = parseFloat(inpCustomDensity.value) || 1.24;
-        } else {
-            density = parseFloat(inpMaterial.value);
-        }
+    function calculateQuick() {
+        const g0 = parseFloat(quickG0.value);
+        const gz = parseFloat(quickGz.value);
+        const s0 = parseFloat(quickS0.value);
 
-        if (isNaN(volume) || volume <= 0 || isNaN(density) || density <= 0) {
-            simulatedMassVal.textContent = "0.0 g";
+        if (isNaN(g0) || isNaN(gz) || isNaN(s0) || g0 <= 0 || gz <= 0 || s0 <= 0) {
+            quickResultVal.textContent = "---";
             return;
         }
 
-        // Weight = Volume * Density * Infill
-        const simulatedMass = volume * density * infill;
-        simulatedMassVal.textContent = simulatedMass.toFixed(1) + " g";
+        const sz = s0 * Math.cbrt(gz / g0);
+        quickResultVal.textContent = sz.toFixed(1) + '%';
     }
 
     // --- SYNC & TEXT UPDATES ---
@@ -224,8 +365,6 @@ document.addEventListener('DOMContentLoaded', () => {
     function updateSliderValTexts() {
         sliderValCurrent.textContent = rangeWeightCurrent.value + ' g';
         sliderValTarget.textContent = rangeWeightTarget.value + ' g';
-        valInfill.textContent = rangeInfill.value + '%';
-        simInfillDisplay.textContent = rangeInfill.value + '%';
     }
 
     // --- CLIPBOARD ---
@@ -368,6 +507,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const s0 = parseFloat(inpScaleCurrent.value);
         const sz = parseFloat(resultScale.textContent);
         const mult = resultMultiplier.textContent;
+        const isTotalWeight = weightRefTotal.checked;
+        const gAdd = isTotalWeight ? parseFloat(inpWeightPost.value) || 0 : 0;
 
         if (isNaN(g0) || isNaN(gz) || isNaN(s0) || isNaN(sz)) {
             showToast('Fehler: Ungültige Werte können nicht gespeichert werden.');
@@ -381,6 +522,8 @@ document.addEventListener('DOMContentLoaded', () => {
             material: matName,
             g0: g0.toFixed(1),
             gz: gz.toFixed(1),
+            isTotalWeight: isTotalWeight,
+            gAdd: gAdd.toFixed(1),
             s0: s0.toFixed(1),
             sz: sz.toFixed(1),
             multiplier: mult
@@ -409,12 +552,17 @@ document.addEventListener('DOMContentLoaded', () => {
         historyTbody.innerHTML = '';
         history.forEach(item => {
             const tr = document.createElement('tr');
+            let targetWeightText = `${item.gz} g`;
+            if (item.isTotalWeight && parseFloat(item.gAdd) > 0) {
+                targetWeightText += ` <span class="history-detail-badge" title="Gesamtgewicht inkl. ${item.gAdd} g Zusatzgewicht">(${item.gAdd}g Kette)</span>`;
+            }
+
             tr.innerHTML = `
                 <td>${item.date}</td>
                 <td style="font-weight: 600; color: #ffffff;">${escapeHTML(item.name)}</td>
                 <td>${item.material}</td>
                 <td>${item.g0} g</td>
-                <td style="font-weight: 500; color: var(--accent-gold);">${item.gz} g</td>
+                <td style="font-weight: 500; color: var(--accent-gold);">${targetWeightText}</td>
                 <td>${item.s0}%</td>
                 <td style="font-weight: 700; color: var(--accent-green);">${item.sz}%</td>
                 <td style="font-family: 'JetBrains Mono', monospace;">${item.multiplier}</td>
@@ -461,15 +609,21 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         let csvContent = 'data:text/csv;charset=utf-8,';
-        csvContent += 'Datum;Objektbezeichnung;Material;Ist-Gewicht (g);Soll-Gewicht (g);Ursprungsskalierung (%);Zielskalierung (%);Multiplikator\r\n';
+        csvContent += 'Datum;Objektbezeichnung;Material;Ist-Gewicht (g);Soll-Gewicht (g);Referenz-Typ;Zusatzgewicht (g);Ursprungsskalierung (%);Zielskalierung (%);Multiplikator\r\n';
 
         history.forEach(item => {
+            const isTotal = item.isTotalWeight === true;
+            const extraWeight = isTotal ? item.gAdd : '0.0';
+            const refType = isTotal ? 'Gesamtgewicht' : 'Reines 3D-Druck-Gewicht';
+            
             const row = [
                 item.date,
                 `"${item.name.replace(/"/g, '""')}"`,
                 item.material,
                 item.g0,
                 item.gz,
+                refType,
+                extraWeight,
                 item.s0,
                 item.sz,
                 item.multiplier
@@ -486,6 +640,188 @@ document.addEventListener('DOMContentLoaded', () => {
         document.body.removeChild(link);
     }
 
+    function toggleMethodPanel() {
+        if (radioMethodA.checked) {
+            panelOptionA.classList.remove('hidden');
+            panelOptionB.classList.add('hidden');
+            if (cardMethodA) cardMethodA.classList.add('active');
+            if (cardMethodB) cardMethodB.classList.remove('active');
+            calculateOptionA();
+        } else {
+            panelOptionA.classList.add('hidden');
+            panelOptionB.classList.remove('hidden');
+            if (cardMethodB) cardMethodB.classList.add('active');
+            if (cardMethodA) cardMethodA.classList.remove('active');
+            calculateAll();
+        }
+    }
+
+    function calculateOptionA() {
+        const vTotal = parseFloat(optAVolume.value);
+        let density = 1.24;
+        if (optAMaterial.value === 'custom') {
+            density = parseFloat(optACustomDensity.value) || 1.24;
+        } else {
+            density = parseFloat(optAMaterial.value);
+        }
+
+        const walls = parseInt(optAWalls.value) || 2;
+        const infillPercent = optASliderInfill ? parseFloat(optASliderInfill.value) : 15;
+        const topLayers = parseInt(optATopLayers.value) || 4;
+        const bottomLayers = parseInt(optABottomLayers.value) || 4;
+        const layerHeight = parseFloat(optALayerHeight.value) || 0.2;
+        const lineWidth = parseFloat(optALineWidth.value) || 0.42;
+
+        if (isNaN(vTotal) || vTotal <= 0) {
+            optAResultWeight.textContent = "---";
+            optAResultVWalls.textContent = "--- cm³";
+            optAResultVTb.textContent = "--- cm³";
+            optAResultVInfill.textContent = "--- cm³";
+            return;
+        }
+
+        // Estimate surface area of the model (in cm2) from volume V (in cm3)
+        // Standard sphere has A = 4.84 * V^(2/3). 
+        // A typical museum object/3D print has details, so we use a scaling factor of 6.5
+        const surfArea = 6.5 * Math.pow(vTotal, 2/3);
+
+        // Thickness of walls and top/bottom shells (in cm)
+        const wallThickness = (walls * lineWidth) / 10; // mm to cm
+        const tbThickness = ((topLayers + bottomLayers) / 2 * layerHeight) / 10; // mm to cm
+
+        // Volumes (in cm3)
+        const vWalls = Math.min(vTotal, surfArea * wallThickness);
+        const vTb = Math.min(vTotal - vWalls, surfArea * tbThickness);
+        const vInside = Math.max(0, vTotal - vWalls - vTb);
+
+        // Weight Calculation
+        const infillFraction = infillPercent / 100;
+        const vPrint = vWalls + vTb + (vInside * infillFraction);
+        const estimatedWeight = vPrint * density;
+
+        // Update UI
+        optAResultWeight.textContent = estimatedWeight.toFixed(1);
+        optAResultVWalls.textContent = vWalls.toFixed(2) + " cm³";
+        optAResultVTb.textContent = vTb.toFixed(2) + " cm³";
+        optAResultVInfill.textContent = vInside.toFixed(2) + " cm³";
+    }
+
+    function handleUploadedFile(file) {
+        const ext = file.name.split('.').pop().toLowerCase();
+        optAUploadStatus.textContent = `Datei geladen: ${file.name}`;
+        optAUploadStatus.style.color = "var(--accent-gold)";
+        
+        if (ext === 'stl') {
+            optAUploadStatus.textContent = `Analysiere ${file.name}...`;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const buffer = e.target.result;
+                try {
+                    const volumeMm3 = calculateSTLVolume(buffer);
+                    const volumeCm3 = volumeMm3 / 1000;
+                    if (volumeCm3 > 0) {
+                        optAVolume.value = volumeCm3.toFixed(1);
+                        optAUploadStatus.textContent = `Erfolgreich geladen: ${file.name} (V = ${volumeCm3.toFixed(1)} cm³)`;
+                        optAUploadStatus.style.color = "var(--accent-green)";
+                        calculateOptionA();
+                    } else {
+                        throw new Error("Ungültiges Volumen berechnet");
+                    }
+                } catch (err) {
+                    console.error("STL-Analyse fehlgeschlagen:", err);
+                    optAUploadStatus.textContent = `Fehler bei STL-Analyse. Bitte Volumen manuell eintragen.`;
+                    optAUploadStatus.style.color = "var(--accent-red)";
+                }
+            };
+            reader.readAsArrayBuffer(file);
+        } else {
+            optAUploadStatus.textContent = `Geladen: ${file.name} (Volumen manuell eintragen)`;
+            optAUploadStatus.style.color = "var(--accent-gold)";
+        }
+    }
+
+    function calculateSTLVolume(buffer) {
+        const view = new DataView(buffer);
+        if (buffer.byteLength > 84) {
+            const triangleCount = view.getUint32(80, true);
+            const expectedSize = 84 + triangleCount * 50;
+            if (buffer.byteLength === expectedSize || buffer.byteLength === expectedSize + 2) {
+                return calculateBinarySTLVolume(view, triangleCount);
+            }
+        }
+        const decoder = new TextDecoder('utf-8');
+        const text = decoder.decode(buffer);
+        return calculateAsciiSTLVolume(text);
+    }
+
+    function calculateBinarySTLVolume(view, count) {
+        let totalVolume = 0;
+        let offset = 84;
+        
+        for (let i = 0; i < count; i++) {
+            const v1x = view.getFloat32(offset + 12, true);
+            const v1y = view.getFloat32(offset + 16, true);
+            const v1z = view.getFloat32(offset + 20, true);
+            
+            const v2x = view.getFloat32(offset + 24, true);
+            const v2y = view.getFloat32(offset + 28, true);
+            const v2z = view.getFloat32(offset + 32, true);
+            
+            const v3x = view.getFloat32(offset + 36, true);
+            const v3y = view.getFloat32(offset + 40, true);
+            const v3z = view.getFloat32(offset + 44, true);
+            
+            const v321 = v3x * v2y * v1z;
+            const v231 = v2x * v3y * v1z;
+            const v312 = v3x * v1y * v2z;
+            const v132 = v1x * v3y * v2z;
+            const v213 = v2x * v1y * v3z;
+            const v123 = v1x * v2y * v3z;
+            
+            const volume = (1.0 / 6.0) * (-v321 + v231 + v312 - v132 - v213 + v123);
+            totalVolume += volume;
+            
+            offset += 50;
+        }
+        return Math.abs(totalVolume);
+    }
+
+    function calculateAsciiSTLVolume(text) {
+        let totalVolume = 0;
+        const lines = text.split('\n');
+        let vertices = [];
+        
+        for (let i = 0; i < lines.length; i++) {
+            const line = lines[i].trim().toLowerCase();
+            if (line.startsWith('vertex')) {
+                const parts = line.split(/\s+/);
+                if (parts.length >= 4) {
+                    const x = parseFloat(parts[1]);
+                    const y = parseFloat(parts[2]);
+                    const z = parseFloat(parts[3]);
+                    vertices.push({ x, y, z });
+                }
+            }
+            if (vertices.length === 3) {
+                const v1 = vertices[0];
+                const v2 = vertices[1];
+                const v3 = vertices[2];
+                
+                const v321 = v3.x * v2.y * v1.z;
+                const v231 = v2.x * v3.y * v1.z;
+                const v312 = v3.x * v1.y * v2.z;
+                const v132 = v1.x * v3.y * v2.z;
+                const v213 = v2.x * v1.y * v3.z;
+                const v123 = v1.x * v2.y * v3.z;
+                
+                const volume = (1.0 / 6.0) * (-v321 + v231 + v312 - v132 - v213 + v123);
+                totalVolume += volume;
+                vertices = [];
+            }
+        }
+        return Math.abs(totalVolume);
+    }
+
     // Helper function to escape HTML entities
     function escapeHTML(str) {
         return str.replace(/[&<>'"]/g, 
@@ -497,5 +833,73 @@ document.addEventListener('DOMContentLoaded', () => {
                 '"': '&quot;'
             }[tag] || tag)
         );
+    }
+
+    // --- DRAWER INTERACTION FOR QUICK CALCULATOR ---
+    const drawer = document.getElementById('quick-calc-drawer');
+    const backdrop = document.getElementById('quick-calc-drawer-backdrop');
+    const btnTriggerDrawer = document.getElementById('btn-trigger-drawer');
+    const fabTriggerDrawer = document.getElementById('quick-calc-drawer-trigger-fab');
+    const btnCloseDrawer = document.getElementById('quick-calc-drawer-close');
+    
+    const btnQuickApply = document.getElementById('btn-quick-apply');
+    const btnQuickCopy = document.getElementById('btn-quick-copy');
+
+    function openDrawer() {
+        if (drawer && backdrop) {
+            drawer.classList.add('open');
+            backdrop.classList.add('visible');
+        }
+    }
+
+    function closeDrawer() {
+        if (drawer && backdrop) {
+            drawer.classList.remove('open');
+            backdrop.classList.remove('visible');
+        }
+    }
+
+    if (btnTriggerDrawer) btnTriggerDrawer.addEventListener('click', openDrawer);
+    if (fabTriggerDrawer) fabTriggerDrawer.addEventListener('click', openDrawer);
+    if (btnCloseDrawer) btnCloseDrawer.addEventListener('click', closeDrawer);
+    if (backdrop) backdrop.addEventListener('click', closeDrawer);
+
+    // Apply values to main inputs
+    if (btnQuickApply) {
+        btnQuickApply.addEventListener('click', () => {
+            const g0Val = parseFloat(quickG0.value);
+            const gzVal = parseFloat(quickGz.value);
+            const s0Val = parseFloat(quickS0.value);
+            
+            if (!isNaN(g0Val) && !isNaN(gzVal)) {
+                inpWeightCurrent.value = g0Val;
+                inpWeightTarget.value = gzVal;
+                if (!isNaN(s0Val)) {
+                    inpScaleCurrent.value = s0Val;
+                }
+                
+                syncInputsToSliders();
+                calculateAll();
+                closeDrawer();
+                showToast('Werte in Hauptrechner übernommen!');
+            } else {
+                showToast('Bitte gültige Werte eingeben.');
+            }
+        });
+    }
+
+    // Copy result to clipboard
+    if (btnQuickCopy) {
+        btnQuickCopy.addEventListener('click', () => {
+            const scaleVal = quickResultVal.textContent;
+            if (scaleVal === '---') return;
+
+            navigator.clipboard.writeText(scaleVal).then(() => {
+                showToast(`Ziel-Skalierung (${scaleVal}) kopiert!`);
+            }).catch(err => {
+                console.error('Kopieren fehlgeschlagen: ', err);
+                showToast('Kopieren fehlgeschlagen.');
+            });
+        });
     }
 });

@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Change3D E-Learning Plattform. Einstieg in den 3D-Druck, Erklärungen zum Slicing, Bambu Lab X2D Wiki-Spezifikationen und interaktive Video-Tutorials.">
+    <title>3D-Druck Lernlandschaft | Change3D</title>
+    <!-- Premium Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- Ambient Holographic Blur Background -->
+    <div class="bg-blobs">
+        <div class="blob blob-blue"></div>
+        <div class="blob blob-gold"></div>
+        <div class="blob blob-green"></div>
+        <div class="grid-overlay"></div>
+    </div>
+
+    <div class="app-container">
+        <!-- Sleek Header -->
+        <header class="app-header glass-panel">
+            <div class="brand">
+                <div class="brand-title">
+                    <span class="badge-main">Change3D E-Learning</span>
+                    <h1>3D-Druck Lernlandschaft</h1>
+                </div>
+                <p class="subtitle">Einstieg, Begriffe, Video-Tutorials und Bambu Lab X2D Integration</p>
+            </div>
+
+            <div class="header-right">
+                <div class="partner-logos">
+                    <div class="partner-logo-container" title="Change3D">
+                        <img src="../change3dlogo.png" alt="Change3D Logo" class="partner-logo">
+                    </div>
+                    <div class="partner-logo-container" title="FH Graubünden">
+                        <img src="../fhgrlogo.png" alt="FH Graubünden Logo" class="partner-logo">
+                    </div>
+                    <div class="partner-logo-container" title="Rätisches Museum">
+                        <img src="../raetisches-muesum.png" alt="Rätisches Museum Logo" class="partner-logo">
+                    </div>
+                </div>
+
+
+
+                <a href="../Landing/index.html" class="btn-back-toolbox btn-back" title="Zurück zur Gesamtübersicht (Toolbox)">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2.5">
+                        <polyline points="15 18 9 12 15 6"></polyline>
+                    </svg>
+                    <span>
+                        <svg class="icon-toolbox" width="13" height="13" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
+                            style="vertical-align: -1px; margin-right: 5px; opacity: 0.9;">
+                            <path d="M16 7V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v3"></path>
+                            <rect x="3" y="7" width="18" height="13" rx="2"></rect>
+                            <line x1="12" y1="12" x2="12" y2="15"></line>
+                        </svg>Toolbox-Übersicht
+                    </span>
+                </a>
+            </div>
+        </header>
+
+        <!-- Main Layout with columns -->
+        <div class="learning-layout">
+
+            <!-- LEFT COLUMN: Academy & Wiki -->
+            <main class="learning-main">
+
+                <!-- Section 1: Video Academy -->
+                <section class="glass-panel card video-academy-card">
+                    <div class="card-header">
+                        <div class="card-icon" style="color: var(--accent-gold)">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+                    </div>
+                        <div>
+                            <h2>Change3D Video-Akademie</h2>
+                            <p>Interaktive Tutorials zum Thema 3D-Modellierung, Slicing und Druckerbedienung</p>
+                        </div>
+                    </div>
+
+                    <!-- Tabs Selector -->
+                    <div class="academy-tabs">
+                        <button class="academy-tab active" data-video-key="intro">
+                            <span class="tab-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></span>
+                            <div class="tab-info">
+                                <span class="tab-title">1. Bambu Studio Einführung</span>
+                                <span class="tab-desc">Grundlegende Softwarebedienung &amp; Slicing-Prozess</span>
+                            </div>
+                        </button>
+                        <button class="academy-tab" data-video-key="hardware">
+                            <span class="tab-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/></svg></span>
+                            <div class="tab-info">
+                                <span class="tab-title">2. Bambu Lab X2D First Print Guide</span>
+                                <span class="tab-desc">Erste Inbetriebnahme &amp; Druck-Workflow</span>
+                            </div>
+                        </button>
+                    </div>
+
+                    <!-- Player Workspace -->
+                    <div class="player-container">
+                        <div class="video-wrapper">
+                            <video id="academy-video" controls style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: contain; background: #000;">
+                                <source src="../Intro_%20Overview%20of%20Bambu%20Studio.mp4" type="video/mp4">
+                                Ihr Browser unterstützt das Video-Tag nicht.
+                            </video>
+                        </div>
+                        <div class="video-notes-panel">
+                            <h4 id="video-notes-title">Wichtigste Erkenntnisse (Key Takeaways):</h4>
+                            <ul class="notes-list" id="video-notes-list">
+                                <li><strong>Software-Einstieg:</strong> Bambu Studio ist das Herzstück zur Vorbereitung
+                                    der Drucke für den X2D.</li>
+                                <li><strong>Orientierung &amp; Skalierung:</strong> Objekte sollten flach auf dem
+                                    Druckbett ausgerichtet werden, um Haftung zu maximieren.</li>
+                                <li><strong>Schichtweiser G-Code:</strong> Nach dem "Slicen" wird der 3D-Körper in
+                                    2D-Fahrbahnen für die Düse übersetzt.</li>
+                                <li><strong>Vorschau-Modul:</strong> Nutzen Sie den Slider rechts im Slicer, um das
+                                    Abfahren der Druckbahnen Schicht für Schicht virtuell zu prüfen.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Section 2: Bambu Lab X2D Wiki Specs -->
+                <section class="glass-panel card wiki-card">
+                    <div class="card-header">
+                        <div class="card-icon" style="color: var(--accent-green)">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+                    </div>
+                        <div>
+                            <h2>Bambu Lab X2D Wiki-Spezifikationen</h2>
+                            <p>Exklusive Einblicke in die Features des Closed-Chamber Dual-Nozzle FDM Druckers</p>
+                        </div>
+                    </div>
+
+                    <div class="wiki-container">
+                        <!-- Navigation Tabs -->
+                        <div class="wiki-tabs">
+                            <button class="wiki-tab-btn active" data-wiki-target="wiki-dual">Dual-Nozzle System</button>
+                            <button class="wiki-tab-btn" data-wiki-target="wiki-heating">Aktive Bauraumheizung</button>
+                            <button class="wiki-tab-btn" data-wiki-target="wiki-ai">AI-Sensoren &amp; Speed</button>
+                            <button class="wiki-tab-btn" data-wiki-target="wiki-ams">Materialien &amp; AMS</button>
+                        </div>
+
+                        <!-- Content Panels -->
+                        <div class="wiki-content">
+                            <!-- Dual-Nozzle -->
+                            <div id="wiki-dual" class="wiki-panel active">
+                                <h3>Wechseldüsen-System (Dual-Nozzle-System)</h3>
+                                <p>
+                                    Das bahnbrechende Merkmal des Bambu Lab X2D ist das <strong>integrierte
+                                        Doppel-Düsensystem (Dual-Hotend)</strong>.
+                                    Im Gegensatz zu klassischen Multimaterial-Druckern, die Filament aus einer einzigen
+                                    Düse spülen müssen, verwendet der X2D zwei getrennte Hotends an einem Schwenkkopf.
+                                </p>
+                                <div class="wiki-grid-info"
+                                    style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; margin-top: 1rem;">
+                                    <div class="wiki-info-box">
+                                        <h5>Mechanischer Schnellwechsel</h5>
+                                        <p style="font-size: 0.775rem; color: var(--text-secondary); line-height: 1.5;">
+                                            Der Wechsel erfolgt über eine präzise Nockenführung im Toolhead ganz ohne
+                                            zusätzlichen Motor. Das spart Gewicht und ermöglicht blitzschnelle
+                                            Umschaltzeiten.
+                                        </p>
+                                    </div>
+                                    <div class="wiki-info-box">
+                                        <h5>Saubere Support-Grenzflächen</h5>
+                                        <p style="font-size: 0.775rem; color: var(--text-secondary); line-height: 1.5;">
+                                            Sie können das Modell aus Standardfilament (z.B. PLA) drucken und die
+                                            Kontaktflächen zum Support aus Spezial-Filament (z.B. wasserlösliches PVA
+                                            oder Breakaway) erzeugen. Das Resultat sind makellose Überhänge.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Bauraumheizung -->
+                            <div id="wiki-heating" class="wiki-panel">
+                                <h3>Aktive Bauraumheizung</h3>
+                                <p>
+                                    Für anspruchsvolle Kunststoffe ist eine stabile Umgebungstemperatur entscheidend.
+                                    Der Bambu Lab X2D verfügt über eine <strong>integrierte aktive
+                                        Bauraumheizung</strong>, die den geschlossenen Gehäuseraum auf bis zu <strong>65
+                                        °C</strong> erwärmt.
+                                </p>
+                                <div class="wiki-grid-info"
+                                    style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; margin-top: 1rem;">
+                                    <div class="wiki-info-box">
+                                        <h5>Verzugsschutz (Anti-Warping)</h5>
+                                        <p style="font-size: 0.775rem; color: var(--text-secondary); line-height: 1.5;">
+                                            Durch die kontrollierte Umgebung kühlen Kunststoffe mit hohem
+                                            Schrumpfungsgrad (wie ABS, ASA, PC oder PA) extrem langsam und gleichmäßig
+                                            ab. Das verhindert das Ablösen der Ecken (Warping).
+                                        </p>
+                                    </div>
+                                    <div class="wiki-info-box">
+                                        <h5>Erhöhte Schichthaftung</h5>
+                                        <p style="font-size: 0.775rem; color: var(--text-secondary); line-height: 1.5;">
+                                            Die Wärme fördert das Verschmelzen der frisch gedruckten Schichten mit der
+                                            darunterliegenden Basis, was die mechanische Festigkeit der Museumsrepliken
+                                            drastisch verbessert.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- AI Sensorik -->
+                            <div id="wiki-ai" class="wiki-panel">
+                                <h3>AI-Sensorik &amp; Hochgeschwindigkeits-Kinematik</h3>
+                                <p>
+                                    Der X2D kombiniert extreme Druckgeschwindigkeiten mit intelligentem Sensorsystemen
+                                    zur Absicherung und automatischen Kalibrierung Ihrer Ausdrucke.
+                                </p>
+                                <ul class="wiki-bullets-list"
+                                    style="margin-top: 0.75rem; font-size: 0.8rem; line-height: 1.6; color: var(--text-secondary);">
+                                    <li><strong>1000 mm/s Verfahrgeschwindigkeit &amp; 20.000 mm/s²
+                                            Beschleunigung:</strong> Rasante Druckzeiten durch leichte CoreXY-Mechanik
+                                        und optimierte Schrittmotorregler.</li>
+                                    <li><strong>Echtzeit-Durchflussmessung (Flow-Sensing):</strong> Der Druckkopf misst
+                                        und kompensiert Viskositätsschwankungen des Filaments im Hotend während des
+                                        Druckens.</li>
+                                    <li><strong>Filament-Verhedderungs-Erkennung:</strong> Ein Sensor am AMS (Automatic
+                                        Material System) stoppt den Druck automatisch, falls sich Spulen verknoten.</li>
+                                    <li><strong>Dual-Kamera AI:</strong> Eine Linse überwacht das Druckbett auf Fehler
+                                        ("Spaghetti-Detection"), die zweite filmt den Toolhead für präzise Regelungen.
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <!-- AMS -->
+                            <div id="wiki-ams" class="wiki-panel">
+                                <h3>Filament-Vielfalt &amp; AMS 2 Pro</h3>
+                                <p>
+                                    Dank seiner gehärteten Stahldüsen und des beheizten Bauraums druckt der X2D nahezu
+                                    jedes gängige Filament. Das <strong>AMS 2 Pro</strong> ermöglicht das automatische
+                                    Verwalten von Filamenten.
+                                </p>
+                                <div class="wiki-grid-info"
+                                    style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; margin-top: 1rem;">
+                                    <div class="wiki-info-box">
+                                        <h5>Breite Filament-Kompatibilität</h5>
+                                        <p style="font-size: 0.775rem; color: var(--text-secondary); line-height: 1.5;">
+                                            Verarbeitung von PLA (Standard/Matte/Silk), PETG, flexiblen TPU-Mischungen
+                                            sowie hochfesten ABS, ASA, PA-Carbonfaser und PC Filamenten.
+                                        </p>
+                                    </div>
+                                    <div class="wiki-info-box">
+                                        <h5>Multi-Material-Kombination</h5>
+                                        <p style="font-size: 0.775rem; color: var(--text-secondary); line-height: 1.5;">
+                                            Es können bis zu 4 AMS 2 Pro Einheiten parallel geschaltet werden, um bis zu
+                                            24 Filamentkanäle anzusteuern. Automatischer Filamentwechsel bei Spulenende
+                                            verhindert Fehlstarts.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </main>
+        </div>
+
+        <!-- Sleek Footer -->
+        <footer class="app-footer">
+            <p>&copy; 2026 Change3D Forschungsprojekt | FH Graubünden & Rätisches Museum</p>
+            <p style="font-size: 0.65rem; color: var(--text-muted); margin-top: 0.25rem;">Gefördert durch Innosuisse
+                (Projekt-Nr. 2026-Change3D)</p>
+        </footer>
+    </div>
+
+    <!-- Floating Drawer for Glossary -->
+    <button type="button" id="glossary-drawer-trigger-fab" class="glossary-drawer-fab" title="Begriffs-Glossar öffnen">
+        <span class="drawer-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></span>
+        <span>Begriffs-Glossar</span>
+    </button>
+
+    <div id="glossary-drawer-backdrop" class="drawer-backdrop"></div>
+
+    <div id="glossary-drawer" class="glossary-drawer">
+        <div class="drawer-header">
+            <div class="drawer-title-group">
+                <span class="drawer-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></span>
+                <h3>Begriffs-Glossar</h3>
+            </div>
+            <button type="button" id="glossary-drawer-close" class="drawer-close-btn">&times;</button>
+        </div>
+        <div class="drawer-body">
+            <p class="drawer-help-text">Die wichtigsten 3D-Druck Fachbegriffe einfach und anschaulich erklärt:</p>
+            <div class="glossary-accordion">
+                <!-- Accordion Item 1: Slicing -->
+                <div class="accordion-item">
+                    <button class="accordion-trigger">
+                        <span>Slicing</span>
+                        <span class="accordion-arrow">▼</span>
+                    </button>
+                    <div class="accordion-content">
+                        <p>
+                            Das "Slicen" (von engl. <i>slice</i> = in Scheiben schneiden) bezeichnet das
+                            softwareseitige Zerlegen eines dreidimensionalen Computermodells (z.B. im STL- oder
+                            STEP-Format) in Hunderte oder Tausende von dünnen, horizontalen Schichten.
+                        </p>
+                        <p style="margin-top: 0.5rem; color: var(--text-secondary);">
+                            Dabei generiert die Software (z.B. Bambu Studio) die genauen Bewegungpfade der Düse
+                            und schreibt diese als G-Code-Textdatei.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Accordion Item 2: Infill & Dichte -->
+                <div class="accordion-item">
+                    <button class="accordion-trigger">
+                        <span>Infill-Dichte</span>
+                        <span class="accordion-arrow">▼</span>
+                    </button>
+                    <div class="accordion-content">
+                        <p>
+                            3D-Drucke werden im Inneren meist nicht massiv gedruckt, um Filament, Gewicht und
+                            Druckzeit zu sparen. Der leere Innenraum wird mit einer Waben-, Gitter- oder
+                            Gyroid-Struktur gefüllt (dem <strong>Infill</strong>).
+                        </p>
+                        <p style="margin-top: 0.5rem; color: var(--text-secondary);">
+                            Die Infill-Dichte wird in Prozent angegeben. Ein Wert von 15 % bis 20 % reicht für
+                            die meisten haptischen Museumsrepliken völlig aus, um Stabilität und Haptik optimal
+                            auszubalancieren.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Accordion Item 3: Wall Loops -->
+                <div class="accordion-item">
+                    <button class="accordion-trigger">
+                        <span>Anzahl der Wände (Wall Loops)</span>
+                        <span class="accordion-arrow">▼</span>
+                    </button>
+                    <div class="accordion-content">
+                        <p>
+                            Wall Loops definieren die Anzahl der konzentrischen Außenbahnen, die die äußere Haut
+                            des Druckteils bilden.
+                        </p>
+                        <p style="margin-top: 0.5rem; color: var(--text-secondary);">
+                            Mehr Wände erhöhen die mechanische Festigkeit und verhindern, dass das Infill-Muster
+                            durch die Außenhaut hindurchschimmert. Typische Werte liegen bei 2 bis 4 Wänden.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Accordion Item 4: Layer Height -->
+                <div class="accordion-item">
+                    <button class="accordion-trigger">
+                        <span>Schichthöhe (Layer Height)</span>
+                        <span class="accordion-arrow">▼</span>
+                    </button>
+                    <div class="accordion-content">
+                        <p>
+                            Die Schichthöhe bestimmt die Dicke jeder horizontalen Kunststoffschicht. Sie
+                            beeinflusst direkt die optische Qualität und die Druckzeit.
+                        </p>
+                        <p style="margin-top: 0.5rem; color: var(--text-secondary);">
+                            Eine feine Schichthöhe (z. B. 0.08 mm oder 0.12 mm) liefert extrem glatte
+                            Oberflächen mit minimal sichtbaren Treppenstufen, verlängert jedoch die Druckzeit
+                            erheblich.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Accordion Item 5: Supports -->
+                <div class="accordion-item">
+                    <button class="accordion-trigger">
+                        <span>Stützstrukturen (Supports)</span>
+                        <span class="accordion-arrow">▼</span>
+                    </button>
+                    <div class="accordion-content">
+                        <p>
+                            Da der FDM-Drucker flüssigen Kunststoff in der Luft nicht freitragend ablegen kann,
+                            müssen überhängende Bauteile (z. B. Überhänge, Brücken) durch Hilfssäulen abgestützt
+                            werden.
+                        </p>
+                        <p style="margin-top: 0.5rem; color: var(--text-secondary);">
+                            Diese Stützstrukturen (Supports) werden nach dem Druck entfernt (abgebrochen oder
+                            aufgelöst). Mit dem Dual-Nozzle-System des X2D können diese durch Spezialfilamente
+                            wie PVA besonders rückstandsfrei abgelöst werden.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Accordion Item 6: Brim / Raft -->
+                <div class="accordion-item">
+                    <button class="accordion-trigger">
+                        <span>Brim / Raft</span>
+                        <span class="accordion-arrow">▼</span>
+                    </button>
+                    <div class="accordion-content">
+                        <p>
+                            Hilfskonstruktionen zur Verbesserung der Druckbetthaftung:
+                        </p>
+                        <ul
+                            style="margin-top: 0.35rem; margin-left: 1.25rem; font-size: 0.775rem; color: var(--text-secondary); display: flex; flex-direction: column; gap: 0.25rem;">
+                            <li><strong>Brim (Rand):</strong> Eine flache, einlagige Umrandung, die direkt an
+                                die Unterseite des Modells anschließt und dessen Auflagefläche verbreitert.</li>
+                            <li><strong>Raft (Floß):</strong> Ein dickes, mehrschichtiges Gitterbett, das unter
+                                das Modell gedruckt wird. Nützlich bei unebenen Betten.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Toast -->
+    <div class="toast hidden" id="toast-notification">
+        <span id="toast-message">Meldung</span>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
