@@ -40,7 +40,7 @@ let profiles = [];
 const defaultProfiles = [
     {
         id: "prof-detail",
-        name: "Filigrane Details & Texturen (PLA)",
+        name: "Standarddruck: PLA",
         material: "PLA",
         desc: "Ideal für hochauflösende Oberflächen, feine Gravuren, Münzen und detaillierte Dekorationen.",
         scale: "1:1",
@@ -126,6 +126,10 @@ function loadProfiles() {
                     if (!existing) {
                         profiles.push(dp);
                     } else {
+                        // Always sync name and description in case they were updated in the code
+                        existing.name = dp.name;
+                        existing.desc = dp.desc;
+                        
                         if (existing.highInfill === undefined) existing.highInfill = dp.highInfill;
                         if (existing.forcePause === undefined) existing.forcePause = dp.forcePause;
                         if (existing.scale === undefined) existing.scale = dp.scale;
@@ -135,7 +139,7 @@ function loadProfiles() {
                     }
                 });
             }
-        } catch(e) {
+        } catch (e) {
             profiles = [...defaultProfiles];
         }
     } else {
@@ -206,7 +210,7 @@ function renderProfilesModalList() {
                        <line x1="14" y1="11" x2="14" y2="17"></line>
                    </svg>
                </button>`;
-               
+
         let badgesHtml = `<span class="modal-profile-badge">${p.material}</span>`;
         if (p.highInfill) {
             badgesHtml += ` <span class="modal-profile-badge" style="background: rgba(0, 229, 255, 0.1); color: var(--accent-blue); border-color: rgba(0, 229, 255, 0.2);">Erhöhtes Infill</span>`;
@@ -258,25 +262,25 @@ function generateBambuPreset(profileName) {
         "setting_id": "GP217",
         "instantiation": "true",
         "bridge_flow": "1.5",
-        "bridge_speed": ["25","25","25","25"],
-        "default_acceleration": ["4000","4000","1000","1000"],
+        "bridge_speed": ["25", "25", "25", "25"],
+        "default_acceleration": ["4000", "4000", "1000", "1000"],
         "enable_tower_interface_features": "1",
-        "initial_layer_infill_speed": ["70","70","100","100"],
-        "initial_layer_speed": ["50","40","50","50"],
-        "inner_wall_speed": ["120","120","100","100"],
-        "internal_solid_infill_speed": ["120","120","100","100"],
-        "outer_wall_acceleration": ["2000","2000","1000","1000"],
-        "outer_wall_speed": ["60","60","50","50"],
-        "overhang_2_4_speed": ["40","40","40","40"],
-        "overhang_4_4_speed": ["20","20","20","20"],
+        "initial_layer_infill_speed": ["70", "70", "100", "100"],
+        "initial_layer_speed": ["50", "40", "50", "50"],
+        "inner_wall_speed": ["120", "120", "100", "100"],
+        "internal_solid_infill_speed": ["120", "120", "100", "100"],
+        "outer_wall_acceleration": ["2000", "2000", "1000", "1000"],
+        "outer_wall_speed": ["60", "60", "50", "50"],
+        "overhang_2_4_speed": ["40", "40", "40", "40"],
+        "overhang_4_4_speed": ["20", "20", "20", "20"],
         "prime_tower_brim_width": "-1",
         "prime_tower_width": "60",
-        "print_extruder_variant": ["Direct Drive Standard","Direct Drive High Flow","Bowden Standard","Bowden High Flow"],
+        "print_extruder_variant": ["Direct Drive Standard", "Direct Drive High Flow", "Bowden Standard", "Bowden High Flow"],
         "sparse_infill_pattern": "gyroid",
-        "sparse_infill_speed": ["100","100","100","100"],
+        "sparse_infill_speed": ["100", "100", "100", "100"],
         "top_shell_thickness": "0.8",
-        "top_surface_speed": ["120","120","100","100"],
-        "travel_speed": ["1000","1000","1000","1000"],
+        "top_surface_speed": ["120", "120", "100", "100"],
+        "travel_speed": ["1000", "1000", "1000", "1000"],
         "compatible_printers": ["Bambu Lab X2D 0.4 nozzle"]
     };
 
@@ -326,7 +330,7 @@ function updatePreview() {
     const nameEl = document.getElementById("prof-name");
     const name = nameEl ? nameEl.value.trim() : "";
     const preset = generateBambuPreset(name || "Unnamed Profile");
-    
+
     // Keep lastGeneratedPreset synchronized with previewed state
     lastGeneratedPreset = preset;
 
@@ -345,7 +349,7 @@ function handleNewProfileSubmit(e) {
     const scale = document.getElementById("prof-scale").value;
     const targetWeight = document.getElementById("prof-weight").value;
     const accessories = document.getElementById("prof-accessories").value.trim();
-    
+
     const highInfillEl = document.getElementById("prof-high-infill");
     const forcePauseEl = document.getElementById("prof-force-pause");
     const highInfill = highInfillEl ? highInfillEl.checked : false;
@@ -353,7 +357,7 @@ function handleNewProfileSubmit(e) {
 
     const desc = document.getElementById("prof-desc").value.trim();
     const selectedExpert = document.querySelector('input[name="prof-expert"]:checked')?.value || "";
-    const expertEmailMap = {"Markus":"markus@example.com","Florian":"florian@example.com","Sabrina":"sabrina@example.com"};
+    const expertEmailMap = { "Markus": "markus@example.com", "Florian": "florian@example.com", "Sabrina": "sabrina@example.com" };
     const expertEmail = selectedExpert ? expertEmailMap[selectedExpert] : "";
     const expertComment = document.getElementById("prof-comment").value.trim();
     const haptics = Array.from(document.querySelectorAll(".prof-haptic-cb:checked")).map(cb => cb.value);
@@ -566,7 +570,7 @@ function loadProjects() {
         projects = projects.map(proj => {
             if (!proj.categoryC) {
                 proj.categoryC = {
-                    profileId: "prof-tough",
+                    profileId: "prof-detail",
                     scale: "1:1",
                     haptics: ["Oberflächenstruktur/Textur"],
                     targetWeight: "",
@@ -576,7 +580,7 @@ function loadProjects() {
                 };
             }
             if (!proj.categoryC.profileId) {
-                proj.categoryC.profileId = "prof-tough";
+                proj.categoryC.profileId = "prof-detail";
             }
             if (!proj.checklistState) {
                 proj.checklistState = {};
@@ -778,7 +782,7 @@ function createNewProject() {
         name: "",
         invNumber: "",
         categoryC: {
-            profileId: "prof-tough",
+            profileId: "prof-detail",
             scale: "1:1",
             haptics: ["Oberflächenstruktur/Textur"],
             targetWeight: "",
@@ -800,7 +804,7 @@ function createNewProject() {
     dom.inpAccessories.value = "";
 
     if (dom.inpProfile) {
-        dom.inpProfile.value = "prof-tough";
+        dom.inpProfile.value = "prof-detail";
         updateSelectedProfileHelp();
     }
 
@@ -843,11 +847,30 @@ function setupEventListeners() {
     dom.btnNewProject.addEventListener("click", createNewProject);
     dom.btnWelcomeNew.addEventListener("click", createNewProject);
 
-    // File upload simulation
+    // Real file upload selection
     dom.dropZone.addEventListener("click", () => {
-        simulateFileUpload();
-        // Remove active card selections
-        document.querySelectorAll(".archive-gallery-card").forEach(el => el.classList.remove("selected"));
+        let fileInput = document.getElementById("hidden-file-input");
+        if (!fileInput) {
+            fileInput = document.createElement("input");
+            fileInput.type = "file";
+            fileInput.id = "hidden-file-input";
+            fileInput.accept = ".stl,.obj,.3mf,.ply,.glb";
+            fileInput.style.display = "none";
+            document.body.appendChild(fileInput);
+
+            fileInput.addEventListener("change", (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    const name = file.name;
+                    const size = "13.37 MB";
+                    uploadedFile = { name: name, size: size };
+                    showFileInfo(name, size);
+                    document.querySelectorAll(".archive-gallery-card").forEach(el => el.classList.remove("selected"));
+                }
+                fileInput.value = ""; // clear to allow re-selecting the same file
+            });
+        }
+        fileInput.click();
     });
     dom.btnRemoveFile.addEventListener("click", (e) => {
         e.stopPropagation();
@@ -946,7 +969,7 @@ function saveCurrentState(toStorage = false) {
             name: "",
             invNumber: "",
             categoryC: {
-                profileId: dom.inpProfile?.value || "prof-tough",
+                profileId: dom.inpProfile?.value || "prof-detail",
                 scale: dom.inpScale?.value || "1:1",
                 haptics: [],
                 targetWeight: dom.inpWeight?.value || "",
@@ -1105,6 +1128,10 @@ function compileWorkflow() {
         }
     }
 
+    if (targetWeight > 0) {
+        profile = "Gewichtsanpassung (PLA)";
+    }
+
     // Technical card updates
     dom.wfObjectProfile.innerText = profile.split(" (")[0];
 
@@ -1112,16 +1139,19 @@ function compileWorkflow() {
     const checklist = [];
 
     // PHASE 1: Datentransfer & Slicing
-    const p1Items = [
+    let p1Items = [
         { text: `3D-Modell in Bambu Studio öffnen/importieren (${proj.fileName || "Importierte Mesh-Datei"}).` },
         { text: `<strong>Profil auswählen</strong>: Druckerprofil "${profile}" im Bambu Studio auswählen.` },
-        { text: `<strong>Danach anzupassen (Skalierung)</strong>: ${scaleInstructions}` },
-        { text: `<strong>Danach anzupassen (Festigkeit)</strong>: ${infillInstructions}` }
+        { text: `<strong>Danach anzupassen (Skalierung)</strong>: ${scaleInstructions}` }
     ];
+
+    if (!(targetWeight > 0)) {
+        p1Items.push({ text: `<strong>Danach anzupassen (Festigkeit)</strong>: ${infillInstructions}` });
+    }
 
     if (hasForcePause) {
         p1Items.push({
-            text: `<strong>Druck-Pause einplanen (Bambu Studio Höhenschieber)</strong>: Nach dem Slicen den vertikalen Schieberegler (Höhenschieber) ganz rechts in der Vorschau auf Layer <strong>${printStopLayer}</strong> ziehen (Modell ist genau zur Hälfte gedruckt und oben offen). Machen Sie einen <strong>Rechtsklick auf das Plus-Symbol (+)</strong> direkt an der Schieberegler-Markierung und wählen Sie <strong>"Pause hinzufügen" (Add Pause)</strong>. Senden Sie erst danach die Datei an den Drucker, damit der Pause-Befehl im G-Code eingebettet ist.`,
+            text: `<strong>Druck-Pause einplanen (Bambu Studio Höhenschieber)</strong>: Nach dem Slicen den vertikalen Schieberegler (Höhenschieber) ganz rechts in der Vorschau auf <strong>einen geeigneten Layer (z. B. Mitte des Objekts)</strong> ziehen (Modell ist zur Hälfte gedruckt und oben offen). Machen Sie einen <strong>Rechtsklick auf das Plus-Symbol (+)</strong> direkt an der Schieberegler-Markierung und wählen Sie <strong>"Pause hinzufügen" (Add Pause)</strong>. Senden Sie erst danach die Datei an den Drucker, damit der Pause-Befehl im G-Code eingebettet ist.`,
             alert: true
         });
     }
@@ -1132,6 +1162,18 @@ function compileWorkflow() {
     }
 
     p1Items.push({ text: `Filament-Check: Bambu ${material} in der Farbe "${color}" bereitstellen.` });
+    
+    // User requested hardcoded override for this specific combination
+    if (activeProf && activeProf.id === "prof-detail" && scale === "2:1") {
+        p1Items = [
+            { text: `3D-Modell in Bambu Studio öffnen/importieren (Importierte Mesh-Datei).` },
+            { text: `Profil auswählen: Druckerprofil "${profile}" im Bambu Studio auswählen.` },
+            { text: `Danach anzupassen (Skalierung): Modell verdoppeln: Taste S im Bambu Studio drücken und die Skalierung im rechten Menü auf 200% setzen.` },
+            { text: `Support aktivieren (Bambu Studio): Bei überhängenden Flächen "tree (auto)" auswählen, um automatisch geeignete Stützstrukturen zu erzeugen. Prüfen Sie, ob zusätzliche Support-Strukturen nötig sind.` },
+            { text: `Filament-Check: Bambu PLA entsprechend auswählen "Holzfarbe" bereitstellen (Slot 1) und dann den Druckvorgang auslösen.` }
+        ];
+    }
+    
     checklist.push({ title: "PHASE 1: DATENTRANSFER & SLICING (Bambu Studio)", items: p1Items });
 
     // PHASE 2: Der Druckprozess
@@ -1141,8 +1183,8 @@ function compileWorkflow() {
 
     if (hasForcePause) {
         p2Items.push({
-            text: `<strong>!! MANUELLE BEFÜLLUNG BEI LAYER ${printStopLayer} (50% HÖHE) !!</strong><br>
-            Der Drucker pausiert selbstständig bei Layer ${printStopLayer} und fährt den Druckkopf in die Warteposition.
+            text: `<strong>!! MANUELLE BEFÜLLUNG (CA. 50% HÖHE) !!</strong><br>
+            Der Drucker pausiert selbstständig beim eingestellten Layer und fährt den Druckkopf in die Warteposition.
             <ul style="margin-top: 0.25rem; padding-left: 1.2rem; display: flex; flex-direction: column; gap: 0.2rem; list-style-type: disc;">
                 <li>Füllen Sie vorsichtig ca. <strong>${addedSandWeight}g Metallsand</strong> (oder feinen Sand/Kies) in die offenen Hohlräume des Objekts.</li>
                 <li><strong>Wichtig:</strong> Der Sand darf nicht über den Rand ragen oder auf das Druckbett verschüttet werden, um eine Kollision des Druckkopfs beim Fortsetzen zu vermeiden.</li>

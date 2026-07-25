@@ -5,8 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description"
-        content="Filament-Skalierungsrechner für 3D-Drucke. Berechnet die optimale Skalierung basierend auf dem Filamentverbrauch nach der kubischen Gewichtsformel.">
-    <title>Filament-Skalierungsrechner | Change3D</title>
+        content="Filament-Gewichtsrechner für 3D-Drucke. Berechnet die optimale Skalierung basierend auf dem Filamentverbrauch nach der kubischen Gewichtsformel.">
+    <title>Filament-Gewichtsrechner | Change3D</title>
     <!-- Premium Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -114,12 +114,38 @@
             <div class="method-card" id="card-method-a">
                 <div class="method-card-indicator"></div>
                 <div class="method-card-icon">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1z"/><path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1z"/><path d="M7 21h10"/><path d="M12 3v18"/><path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2"/></svg>
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1z" />
+                        <path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1z" />
+                        <path d="M7 21h10" />
+                        <path d="M12 3v18" />
+                        <path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2" />
+                    </svg>
                 </div>
                 <div class="method-card-content">
                     <h4>Option B</h4>
                     <h3>Gewichtsabschätzung</h3>
                     <p>Schnelle Schätzung ohne Slicing (Material, Wände &amp; Infill)</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="glass-panel" style="margin-bottom: 2rem; border-color: var(--accent-gold); background: rgba(0, 174, 66, 0.03);">
+            <div style="display: flex; gap: 1rem; align-items: flex-start;">
+                <div style="color: var(--accent-gold);">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="12" y1="16" x2="12" y2="12"></line>
+                        <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                    </svg>
+                </div>
+                <div>
+                    <h4 style="margin: 0 0 0.5rem 0; font-size: 1rem; font-weight: 600;">Alternative: Druckpause & Sandfüllung</h4>
+                    <p style="margin: 0; font-size: 0.9rem; color: var(--text-secondary); line-height: 1.5;">
+                        Eine Alternative zur Erhöhung der Kunststoffmasse ist es, den 3D-Druck in der Mitte zu pausieren, sodass Hohlräume direkt mit Metallsand gefüllt werden können. 
+                        Verwenden Sie diesbezüglich bitte den <a href="../prototype1_15062026/index.html" style="color: var(--accent-gold); text-decoration: underline; font-weight: 500;">3D-Workflow-Assistenten</a>, um ein entsprechendes Druckprofil (Gewichtsanpassung) auszuwählen und eine spezifische Anleitung generieren zu lassen.
+                    </p>
                 </div>
             </div>
         </div>
@@ -132,7 +158,14 @@
                     <div class="glass-panel card">
                         <div class="card-header">
                             <div class="card-icon" style="color: var(--accent-gold)">
-                                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1z"/><path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1z"/><path d="M7 21h10"/><path d="M12 3v18"/><path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2"/></svg>
+                                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1z" />
+                                    <path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1z" />
+                                    <path d="M7 21h10" />
+                                    <path d="M12 3v18" />
+                                    <path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2" />
+                                </svg>
                             </div>
                             <div>
                                 <h2>Druckparameter</h2>
@@ -324,7 +357,7 @@
                         </p>
                         <ul class="guide-list-small"
                             style="list-style: none; padding-left: 0.5rem; gap: 0.35rem; font-size: 0.775rem; color: var(--text-secondary); margin-bottom: 0.5rem;">
-                            <li>• Außenwände</li>
+                            <li>• Aussenwände</li>
                             <li>• Obere und untere Vollschichten</li>
                             <li>• Innenbereich mit dem gewählten Infill</li>
                         </ul>
@@ -452,7 +485,7 @@
                                 </div>
                             </div>
 
-                            <!-- Zusatzgewicht (Nachbearbeitung), standardmäßig ausgeblendet -->
+                            <!-- Zusatzgewicht (Nachbearbeitung), standardmässig ausgeblendet -->
                             <div class="form-group hidden" id="post-processing-group">
                                 <label for="inp-weight-post">
                                     Zusatzgewicht Nachbearbeitung (z. B. Kette, Öse)
@@ -812,7 +845,20 @@
     <!-- Floating Drawer for Quick Calculator (Option A) -->
     <button type="button" id="quick-calc-drawer-trigger-fab" class="quick-calc-drawer-fab"
         title="Schnellrechner öffnen">
-        <span class="fab-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="16" y1="10" x2="16" y2="10"/><line x1="12" y1="10" x2="12" y2="10"/><line x1="8" y1="10" x2="8" y2="10"/><line x1="16" y1="14" x2="16" y2="14"/><line x1="12" y1="14" x2="12" y2="14"/><line x1="8" y1="14" x2="8" y2="14"/><line x1="16" y1="18" x2="16" y2="18"/><line x1="12" y1="18" x2="12" y2="18"/><line x1="8" y1="18" x2="8" y2="18"/></svg></span>
+        <span class="fab-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="4" y="2" width="16" height="20" rx="2" />
+                <line x1="8" y1="6" x2="16" y2="6" />
+                <line x1="16" y1="10" x2="16" y2="10" />
+                <line x1="12" y1="10" x2="12" y2="10" />
+                <line x1="8" y1="10" x2="8" y2="10" />
+                <line x1="16" y1="14" x2="16" y2="14" />
+                <line x1="12" y1="14" x2="12" y2="14" />
+                <line x1="8" y1="14" x2="8" y2="14" />
+                <line x1="16" y1="18" x2="16" y2="18" />
+                <line x1="12" y1="18" x2="12" y2="18" />
+                <line x1="8" y1="18" x2="8" y2="18" />
+            </svg></span>
         <span class="fab-text">Formel-Schnellrechner</span>
     </button>
 
@@ -821,11 +867,24 @@
     <div id="quick-calc-drawer" class="quick-calc-drawer">
         <div class="drawer-header">
             <div class="drawer-title-group">
-                <span class="drawer-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="16" y1="10" x2="16" y2="10"/><line x1="12" y1="10" x2="12" y2="10"/><line x1="8" y1="10" x2="8" y2="10"/><line x1="16" y1="14" x2="16" y2="14"/><line x1="12" y1="14" x2="12" y2="14"/><line x1="8" y1="14" x2="8" y2="14"/><line x1="16" y1="18" x2="16" y2="18"/><line x1="12" y1="18" x2="12" y2="18"/><line x1="8" y1="18" x2="8" y2="18"/></svg></span>
+                <span class="drawer-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="4" y="2" width="16" height="20" rx="2" />
+                        <line x1="8" y1="6" x2="16" y2="6" />
+                        <line x1="16" y1="10" x2="16" y2="10" />
+                        <line x1="12" y1="10" x2="12" y2="10" />
+                        <line x1="8" y1="10" x2="8" y2="10" />
+                        <line x1="16" y1="14" x2="16" y2="14" />
+                        <line x1="12" y1="14" x2="12" y2="14" />
+                        <line x1="8" y1="14" x2="8" y2="14" />
+                        <line x1="16" y1="18" x2="16" y2="18" />
+                        <line x1="12" y1="18" x2="12" y2="18" />
+                        <line x1="8" y1="18" x2="8" y2="18" />
+                    </svg></span>
                 <h3>Formel-Schnellrechner</h3>
             </div>
             <button type="button" id="quick-calc-drawer-close" class="drawer-close-btn"
-                title="Schließen">&times;</button>
+                title="Schliessen">&times;</button>
         </div>
         <div class="drawer-body">
             <p class="drawer-help-text">

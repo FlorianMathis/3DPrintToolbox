@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Change3D - 3D Scan Plattform. Anleitungen und Unterstützung beim 3D-Scannen mit RealityScan und AR Guidance Mode.">
+    <title>3D Scan | Change3D</title>
+    <!-- Premium Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="bg-blobs">
+        <div class="blob blob-blue"></div>
+        <div class="blob blob-gold"></div>
+        <div class="blob blob-green"></div>
+        <div class="grid-overlay"></div>
+    </div>
+
+    <div class="app-container">
+        <!-- Sleek Header -->
+        <header class="app-header glass-panel">
+            <div class="brand">
+                <div class="brand-title">
+                    <span class="badge-main">Change3D Scan</span>
+                    <h1>3D Scan Plattform</h1>
+                </div>
+                <p class="subtitle">Anleitung für RealityScan mit AR Guidance Mode</p>
+            </div>
+            <div class="header-right">
+                <div class="partner-logos">
+                    <div class="partner-logo-container" title="Change3D"><img src="../change3dlogo.png"
+                            alt="Change3D Logo" class="partner-logo"></div>
+                    <div class="partner-logo-container" title="FH Graubünden"><img src="../fhgrlogo.png"
+                            alt="FH Graubünden Logo" class="partner-logo"></div>
+                    <div class="partner-logo-container" title="Rätisches Museum"><img src="../raetisches-muesum.png"
+                            alt="Rätisches Museum Logo" class="partner-logo"></div>
+                </div>
+                <a href="../Landing/index.html" class="btn-back-toolbox btn-back"
+                    title="Zurück zur Gesamtübersicht (Toolbox)">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2.5">
+                        <polyline points="15 18 9 12 15 6"></polyline>
+                    </svg>
+                    <span>Zurück zur Toolbox</span>
+                </a>
+            </div>
+        </header>
+
+        <!-- Main Layout with columns -->
+        <div class="learning-layout">
+            <main class="learning-main"
+                style="display: grid; grid-template-columns: 1fr 2fr; gap: 2rem; align-items: start;">
+                <!-- Section 1: Video Placeholder -->
+                <section class="glass-panel card video-academy-card">
+                    <div class="card-header">
+                        <div class="card-icon" style="color: var(--accent-blue)">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M22 10v6M2 10l10-5 10 5-10 5z" />
+                                <path d="M6 12v5c3 3 9 3 12 0v-5" />
+                            </svg>
+                        </div>
+                        <div>
+                            <h2>Beispielvideo: 3D Scan Workflow</h2>
+                            <p>Sehen Sie sich den gesamten Prozess mit RealityScan an</p>
+                        </div>
+                    </div>
+                    <div class="player-container">
+                        <div class="video-wrapper">
+                            <!-- Video -->
+                            <video id="academy-video" controls
+                                style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: contain; background: #000;">
+                                <source src="../realityscan_intro.mp4" type="video/mp4">
+                                Ihr Browser unterstützt das Video-Tag nicht.
+                            </video>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Section 2: Instructions -->
+                <section class="glass-panel card wiki-card">
+                    <div class="card-header"
+                        style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.5rem;">
+                        <div style="display: flex; align-items: flex-start; gap: 1rem;">
+                            <div class="card-icon" style="color: var(--accent-gold)">
+                                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M12 20h9" />
+                                    <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z" />
+                                </svg>
+                            </div>
+                            <div>
+                                <h2 style="margin: 0; font-size: 1.25rem;">Schritt-für-Schritt Anleitung</h2>
+                                <p style="margin: 0.25rem 0 0 0; font-size: 0.85rem; color: var(--text-secondary);">So
+                                    erstellen Sie einen optimalen 3D-Scan mit RealityScan im AR Guidance Mode</p>
+                            </div>
+                        </div>
+                        <button onclick="window.print()" class="btn-back" title="Anleitung als PDF drucken"
+                            style="margin-top: 0; white-space: nowrap; flex-shrink: 0;">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.5">
+                                <polyline points="6 9 6 2 18 2 18 9"></polyline>
+                                <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2">
+                                </path>
+                                <rect x="6" y="14" width="12" height="8"></rect>
+                            </svg>
+                            <span>PDF Druck (analog)</span>
+                        </button>
+                    </div>
+
+                    <div class="wiki-container">
+                        <!-- Navigation Tabs -->
+                        <div class="wiki-tabs">
+                            <button class="wiki-tab-btn active" data-wiki-target="wiki-prep">1. Vorbereitung</button>
+                            <button class="wiki-tab-btn" data-wiki-target="wiki-ar">2. AR Guidance Mode</button>
+                            <button class="wiki-tab-btn" data-wiki-target="wiki-scan">3. Der Scan-Vorgang</button>
+                            <button class="wiki-tab-btn" data-wiki-target="wiki-finish">4. Abschluss & Export</button>
+                        </div>
+
+                        <!-- Content Panels -->
+                        <div class="wiki-content">
+                            <!-- Prep -->
+                            <div id="wiki-prep" class="wiki-panel active">
+                                <h3>Vorbereitung (Setup)</h3>
+                                <p>Ein guter 3D-Scan beginnt mit der richtigen Umgebung und dem korrekten Setup.</p>
+                                <ul class="wiki-bullets-list"
+                                    style="margin-top: 0.75rem; font-size: 0.8rem; line-height: 1.6; color: var(--text-secondary);">
+                                    <li><strong>Die weisse Platte:</strong> Legen Sie eine saubere, matte weisse Platte
+                                        (z.B. Karton oder Kunststoff) auf einen gut beleuchteten Tisch. Diese hilft der
+                                        Software, das Objekt vom Hintergrund zu trennen.</li>
+                                    <li><strong>Das Objekt:</strong> Platzieren Sie das Objekt, das Sie scannen möchten,
+                                        mittig auf der weissen Platte. Achten Sie darauf, dass das Objekt nicht zu stark
+                                        spiegelt oder transparent ist.</li>
+                                    <li><strong>Beleuchtung:</strong> Sorgen Sie für eine gleichmässige, diffuse
+                                        Beleuchtung (Vermeiden Sie harte Schatten oder direktes Sonnenlicht).</li>
+                                    <li><strong>Smartphone vorbereiten:</strong> Öffnen Sie die RealityScan App auf
+                                        Ihrem Smartphone und stellen Sie sicher, dass Ihre Kameralinse sauber ist.</li>
+                                </ul>
+                            </div>
+
+                            <!-- AR Guidance Mode -->
+                            <div id="wiki-ar" class="wiki-panel">
+                                <h3>AR Guidance Mode aktivieren</h3>
+                                <p>Der Augmented Reality (AR) Guidance Mode hilft Ihnen, alle Perspektiven des Objekts
+                                    systematisch zu erfassen.</p>
+                                <ul class="wiki-bullets-list"
+                                    style="margin-top: 0.75rem; font-size: 0.8rem; line-height: 1.6; color: var(--text-secondary);">
+                                    <li>Wählen Sie in der RealityScan App den <strong>"+-Knopf"</strong> um ein neues
+                                        Projekt anzulegen.</li>
+                                    <li>Aktivieren Sie in den Aufnahmeeinstellungen den <strong>AR Guidance
+                                            Mode</strong>.</li>
+                                    <li>Die App wird Sie nun bitten, das gewünschte Objekt vollständig aufzunehmen.</li>
+                                    <li>Bei der Bildaufnahme erscheinen nun AR-Markierungen oder Boxen um Ihr Objekt,
+                                        die Ihnen anzeigen,
+                                        aus welchen Winkeln Sie noch Fotos machen müssen.</li>
+                                </ul>
+                            </div>
+
+                            <!-- Scan -->
+                            <div id="wiki-scan" class="wiki-panel">
+                                <h3>Der Scan-Vorgang</h3>
+                                <p>Jetzt nehmen Sie die Bilder des Objekts auf. Der AR Guidance Mode führt Sie dabei.
+                                    Machen Sie mindestens 100 Bilder des Objekts und bewegen Sie das Objekt dabei
+                                    nicht.
+                                </p>
+                                <ul class="wiki-bullets-list"
+                                    style="margin-top: 0.75rem; font-size: 0.8rem; line-height: 1.6; color: var(--text-secondary);">
+                                    <li><strong>Systematisches Vorgehen:</strong> Bewegen Sie sich in kleinen Schritten
+                                        im Kreis um das Objekt herum. Nehmen Sie Bilder aus verschiedenen Höhen auf
+                                        (z.B. Augenhöhe, von schräg oben, von direkt oben).</li>
+                                    <li><strong>Überlappung:</strong> Jedes Foto sollte zu etwa 50-70% mit dem
+                                        vorherigen Foto überlappen.</li>
+                                    <li><strong>Grüne Markierungen:</strong> Im AR Guidance Mode sehen Sie, dass die
+                                        AR-Boxen grün werden, wenn ein Bereich ausreichend erfasst wurde. Ihr Ziel ist
+                                        es, das gesamte Objekt "grün" zu färben.</li>
+                                    <li><strong>Ruhige Hand:</strong> Halten Sie das Smartphone bei jedem Foto möglichst
+                                        still, um Unschärfen zu vermeiden.</li>
+                                </ul>
+                            </div>
+
+                            <!-- Finish -->
+                            <div id="wiki-finish" class="wiki-panel">
+                                <h3>Abschluss & Export</h3>
+                                <p>Sobald alle Bereiche des Objekts abgedeckt sind, können Sie den Scan verarbeiten
+                                    lassen.</p>
+                                <ul class="wiki-bullets-list"
+                                    style="margin-top: 0.75rem; font-size: 0.8rem; line-height: 1.6; color: var(--text-secondary);">
+                                    <li>Prüfen Sie im 3D-Vorschaumodus der App, ob das Modell vollständig und ohne
+                                        Lücken (Löcher) ist.</li>
+
+                                    <li>Klicken Sie auf <strong> Weiter (Next)</strong>. Nach Abschluss der initialen
+                                        Verarbeitung können Sie das Modell zuschneiden (Cropping), um Teile der
+                                        Umgebung zu entfernen (z. B. weisse Platte). Dann auf <strong>Bereit zur
+                                            Verarbeitung (Ready to Process)</strong>.</li>
+                                    <li>Vergeben Sie ihrem Projekt einen Titel (z. B. "Katze") und lassen Sie alle
+                                        anderen Einstellungen so wie sie sind. Drücken Sie dann "Projekt verarbeiten
+                                        (Process project)". Die Bilder werden nun in
+                                        die Cloud geladen und in ein 3D-Modell umgewandelt.</li>
+                                    <li>Exportieren Sie das Modell (z.B. als OBJ, FBX oder GLTF), um es
+                                        weiterzuverarbeiten oder für den 3D-Druck vorzubereiten.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </main>
+        </div>
+
+        <footer class="app-footer">
+            <p>&copy; 2026 Change3D Forschungsprojekt | FH Graubünden & Rätisches Museum</p>
+            <p style="font-size: 0.65rem; color: var(--text-muted); margin-top: 0.25rem;">Gefördert durch Innosuisse
+                (Projekt-Nr. 2026-Change3D)</p>
+        </footer>
+    </div>
+
+    <!-- PRINT LAYOUT -->
+    <div id="print-layout" class="print-only-layout">
+        <div class="print-cover">
+            <div class="print-header">
+                <h2>RÄTISCHES MUSEUM</h2>
+                <p>3D Scan - RealityScan Anleitung</p>
+            </div>
+
+            <div class="print-title-section">
+                <h1>ANLEITUNG FÜR 3D SCAN</h1>
+                <p>Schritt-für-Schritt Workflow mit AR Guidance Mode.</p>
+            </div>
+
+            <div class="print-section">
+                <h3>1. Vorbereitung (Setup)</h3>
+                <ul>
+                    <li>Die weisse Platte: Legen Sie eine saubere, matte weisse Platte auf einen gut beleuchteten Tisch.
+                    </li>
+                    <li>Das Objekt: Platzieren Sie das Objekt mittig auf der weissen Platte. Achten Sie darauf, dass das
+                        Objekt nicht zu stark spiegelt oder transparent ist.</li>
+                    <li>Beleuchtung: Sorgen Sie für eine gleichmässige, diffuse Beleuchtung (Vermeiden Sie harte
+                        Schatten).</li>
+                    <li>Smartphone vorbereiten: Öffnen Sie die RealityScan App und reinigen Sie die Kameralinse.</li>
+                </ul>
+
+                <h3>2. AR Guidance Mode aktivieren</h3>
+                <ul>
+                    <li>Wählen Sie in der App "Neues Projekt".</li>
+                    <li>Aktivieren Sie den AR Guidance Mode in den Aufnahmeeinstellungen.</li>
+                    <li>Erfassen Sie die Oberfläche (weisse Platte), bis das AR-Raster einrastet.</li>
+                    <li>AR-Markierungen zeigen an, aus welchen Winkeln Fotos benötigt werden.</li>
+                </ul>
+
+                <h3>3. Der Scan-Vorgang</h3>
+                <ul>
+                    <li>Systematisches Vorgehen: Bewegen Sie sich in kleinen Schritten um das Objekt.</li>
+                    <li>Überlappung: Jedes Foto sollte zu etwa 50-70% überlappen.</li>
+                    <li>Grüne Markierungen: Färben Sie das gesamte Objekt durch Fotos im AR-Modus grün.</li>
+                    <li>Ruhige Hand: Halten Sie das Smartphone bei jedem Foto still.</li>
+                </ul>
+
+                <h3>4. Abschluss & Export</h3>
+                <ul>
+                    <li>Prüfen Sie im 3D-Vorschaumodus, ob das Modell vollständig und ohne Löcher ist.</li>
+                    <li>Klicken Sie auf Verarbeiten (Process).</li>
+                    <li>Schneiden Sie das Modell nach Abschluss zu (Cropping).</li>
+                    <li>Exportieren Sie das Modell (z.B. als OBJ, FBX oder GLTF) für den 3D-Druck.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
