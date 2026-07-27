@@ -351,7 +351,7 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label>Haptischer Fokus (Mehrfachauswahl möglich)</label>
+                                    <label>Eigenschaften (Mehrfachauswahl möglich)</label>
                                     <div class="haptic-focus-grid">
                                         <label class="chip-checkbox">
                                             <input type="checkbox" name="haptics" value="Oberflächenstruktur/Textur">
@@ -420,6 +420,19 @@
                                                             d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z" />
                                                     </svg></span>
                                                 <span>Mehrfarbig</span>
+                                            </span>
+                                        </label>
+                                        <label class="chip-checkbox">
+                                            <input type="checkbox" name="haptics" value="Schrift hinzufügen">
+                                            <span class="chip-label">
+                                                <span class="chip-icon"><svg width="16" height="16" viewBox="0 0 24 24"
+                                                        fill="none" stroke="currentColor" stroke-width="2"
+                                                        stroke-linecap="round" stroke-linejoin="round">
+                                                        <polyline points="4 7 4 4 20 4 20 7" />
+                                                        <line x1="9" y1="20" x2="15" y2="20" />
+                                                        <line x1="12" y1="4" x2="12" y2="20" />
+                                                    </svg></span>
+                                                <span>Schrift hinzufügen</span>
                                             </span>
                                         </label>
                                     </div>
@@ -661,7 +674,7 @@
                                 <select id="prof-material" class="form-select" style="padding: 0.5rem 0.8rem;">
                                     <option value="PLA">PLA</option>
                                     <option value="PETG">PETG</option>
-                                    <option value="TPU">TPU</option>
+                                    <option value="TPU">TPU – Gummiartig</option>
                                 </select>
                             </div>
                             <div class="form-group">
@@ -719,6 +732,12 @@
                                     <input type="checkbox" class="prof-haptic-cb" value="Mehrfarbig"
                                         style="accent-color: var(--accent-gold); width: 14px; height: 14px;">
                                     <span>Mehrfarbig</span>
+                                </label>
+                                <label
+                                    style="display: flex; align-items: center; gap: 0.35rem; font-size: 0.775rem; text-transform: none; font-weight: normal; cursor: pointer; user-select: none;">
+                                    <input type="checkbox" class="prof-haptic-cb" value="Schrift hinzufügen"
+                                        style="accent-color: var(--accent-gold); width: 14px; height: 14px;">
+                                    <span>Schrift hinzufügen</span>
                                 </label>
                             </div>
                         </div>

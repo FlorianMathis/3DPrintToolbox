@@ -45,7 +45,7 @@ const defaultProfiles = [
         desc: "Ideal für hochauflösende Oberflächen, feine Gravuren, Münzen und detaillierte Dekorationen.",
         scale: "1:1",
         targetWeight: "",
-        haptics: ["Oberflächenstruktur/Textur"],
+        haptics: [],
         accessories: "",
         highInfill: false,
         forcePause: false
@@ -57,7 +57,7 @@ const defaultProfiles = [
         desc: "Für Objekte mit holzähnlicher Textur und Haptik. Nutzt Filament mit echtem Holzfaser-Anteil.",
         scale: "1:1",
         targetWeight: "",
-        haptics: ["Oberflächenstruktur/Textur"],
+        haptics: [],
         accessories: "",
         highInfill: false,
         forcePause: false
@@ -76,12 +76,12 @@ const defaultProfiles = [
     },
     {
         id: "prof-tpu",
-        name: "Flexibel & Stoßdämpfend (TPU)",
+        name: "Gummiartig, Flexibel & Stoßdämpfend (TPU)",
         material: "TPU",
         desc: "Gummiartige Elastizität (Härtegrad ca. 95A). Perfekt für elastische Dichtungen, dämpfende Unterlagen oder bruchsichere Griffe. Muss sehr langsam gedruckt werden.",
         scale: "1:1",
         targetWeight: "",
-        haptics: ["Oberflächenstruktur/Textur", "Mechanische Belastbarkeit (Häufiges Anfassen)"],
+        haptics: ["Mechanische Belastbarkeit (Häufiges Anfassen)"],
         accessories: "",
         highInfill: false,
         forcePause: false
@@ -105,7 +105,7 @@ const defaultProfiles = [
         desc: "Der Allrounder für schnelle Prototypen, solide Körper und Alltagsgegenstände. Sehr leicht zu drucken mit optimierter Schlagzähigkeit im Vergleich zu Standard-PLA.",
         scale: "1:1",
         targetWeight: "50",
-        haptics: ["Oberflächenstruktur/Textur"],
+        haptics: [],
         accessories: "",
         highInfill: false,
         forcePause: false
@@ -572,7 +572,7 @@ function loadProjects() {
                 proj.categoryC = {
                     profileId: "prof-detail",
                     scale: "1:1",
-                    haptics: ["Oberflächenstruktur/Textur"],
+                    haptics: [],
                     targetWeight: "",
                     material: "PLA",
                     color: "Blau",
@@ -614,7 +614,7 @@ function loadProjects() {
                 categoryC: {
                     profileId: "prof-detail",
                     scale: "5:1",
-                    haptics: ["Oberflächenstruktur/Textur", "Mehrfarbig"],
+                    haptics: ["Mehrfarbig"],
                     targetWeight: "",
                     material: "PLA",
                     color: "Blau",
@@ -631,7 +631,7 @@ function loadProjects() {
                 categoryC: {
                     profileId: "prof-tpu",
                     scale: "1:1",
-                    haptics: ["Oberflächenstruktur/Textur"],
+                    haptics: [],
                     targetWeight: "",
                     material: "TPU",
                     color: "Schwarz",
@@ -784,7 +784,7 @@ function createNewProject() {
         categoryC: {
             profileId: "prof-detail",
             scale: "1:1",
-            haptics: ["Oberflächenstruktur/Textur"],
+            haptics: [],
             targetWeight: "",
             material: "PLA",
             color: "Blau",
@@ -812,7 +812,7 @@ function createNewProject() {
     if (blueRadio) blueRadio.checked = true;
 
     document.querySelectorAll('input[name="haptics"]').forEach(cb => {
-        cb.checked = cb.value === "Oberflächenstruktur/Textur";
+        cb.checked = false;
     });
 
     document.querySelectorAll(".archive-gallery-card").forEach(el => el.classList.remove("selected"));
@@ -1079,6 +1079,8 @@ function compileWorkflow() {
     let filament = `Bambu ${material} (${color})`;
     if (profile.includes("Wood")) {
         filament = "Bambu PLA Wood (Holzanteil, abrasiv)";
+    } else if (material === "TPU") {
+        filament = "Bambu TPU (gummiartig) – in Druckkopf 4 laden";
     }
 
     let post = "Tree-Support mit Flachzange entfernen. Kanten mit Schleifvlies entgraten.";
@@ -1145,7 +1147,7 @@ function compileWorkflow() {
         { text: `<strong>Danach anzupassen (Skalierung)</strong>: ${scaleInstructions}` }
     ];
 
-    if (!(targetWeight > 0)) {
+    if (!(targetWeight > 0) && material !== "TPU") {
         p1Items.push({ text: `<strong>Danach anzupassen (Festigkeit)</strong>: ${infillInstructions}` });
     }
 
@@ -1161,7 +1163,32 @@ function compileWorkflow() {
         p1Items.push({ text: `<strong>Mehrfarb-Zuweisung (Color Painting)</strong>: AMS (Automatic Material System) am Drucker mit den Filament-Farben bestücken und in Bambu Studio synchronisieren. Danach das 3D-Modell im Slicer anklicken und das Werkzeug <strong>Color Painting</strong> mit der Taste <strong>N</strong> aufrufen, um die Bereiche des Objekts manuell einzufärben.`, alert: true });
     }
 
-    p1Items.push({ text: `Filament-Check: Bambu ${material} in der Farbe "${color}" bereitstellen.` });
+    if (haptics.includes("Schrift hinzufügen")) {
+        p1Items.push({
+            text: `<strong>Schrift / Text hinzufügen (Bambu Studio Text-Werkzeug):</strong><br>
+            <ul style="margin-top: 0.25rem; padding-left: 1.2rem; display: flex; flex-direction: column; gap: 0.2rem; list-style-type: disc;">
+                <li>Wählen Sie im Slicer in der oberen Symbolleiste das <strong>Text-Werkzeug ("T"-Element)</strong> aus, um eine Beschriftung, Prägung oder Gravur auf dem Modell anzubringen.</li>
+                <li><strong>Text &amp; Schriftart:</strong> Geben Sie im sich öffnenden Menü den gewünschten Text (z. B. Museumsinventarnummer oder Beschriftung) ein, wählen Sie eine gut lesbare Schriftart und passen Sie die Schriftgröße an die Modellfläche an.</li>
+                <li><strong>Erhaben oder Graviert:</strong> Stellen Sie über die <em>Dicke (Thickness)</em> ein, ob der Text <strong>erhaben</strong> (positiver Wert, z. B. 0.5 mm) oder <strong>vertieft / eingraviert</strong> (negativer Wert, z. B. -0.5 mm) geprägt werden soll.</li>
+                <li><strong>Platzierung:</strong> Klicken Sie auf die gewünschte Stelle auf dem 3D-Modell im Slicer, um den Text zu platzieren. Nutzen Sie bei Bedarf die Werkzeuge <em>Verschieben (M)</em> oder <em>Drehen (R)</em> zur exakten Ausrichtung.</li>
+            </ul>`,
+            alert: true
+        });
+    }
+
+    if (material === "TPU") {
+        p1Items.push({
+            text: `<strong>Filament laden &amp; zuweisen (Druckkopf 4 / Slot 4 für TPU):</strong><br>
+            <ul style="margin-top: 0.25rem; padding-left: 1.2rem; display: flex; flex-direction: column; gap: 0.2rem; list-style-type: disc;">
+                <li><strong>Am 3D-Drucker (Druckkopf 4):</strong> Das TPU-Filament manuell in <strong>Druckkopf 4</strong> (bzw. Spulenhalter / Slot 4) einsetzen und entsprechend laden (am Display über das Filament-Menü den Druckkopf 4 aufheizen und das Filament bis zur Düse fördern).</li>
+                <li><strong>In Bambu Studio (Auswahl &amp; Zuweisung):</strong> Wählen Sie im Slicer in der Filamentübersicht bei Platz 4 das <strong>Bambu TPU (gummiartig)</strong> aus und weisen Sie es dem 3D-Modell zu (Rechtsklick auf das Modell &gt; Filament ändern &gt; 4. TPU).</li>
+                <li><strong>Wichtig bei Weichfilamenten:</strong> Da TPU gummiartig und elastisch ist, muss das Filament absolut reibungs- und spannungsfrei in den Druckkopf 4 abrollen können, um Förderprobleme oder Verheddern im Extruder zu vermeiden.</li>
+            </ul>`,
+            alert: true
+        });
+    } else {
+        p1Items.push({ text: `Filament-Check: Bambu ${material}-Filament bereitstellen.` });
+    }
     
     // User requested hardcoded override for this specific combination
     if (activeProf && activeProf.id === "prof-detail" && scale === "2:1") {
@@ -1170,7 +1197,7 @@ function compileWorkflow() {
             { text: `Profil auswählen: Druckerprofil "${profile}" im Bambu Studio auswählen.` },
             { text: `Danach anzupassen (Skalierung): Modell verdoppeln: Taste S im Bambu Studio drücken und die Skalierung im rechten Menü auf 200% setzen.` },
             { text: `Support aktivieren (Bambu Studio): Bei überhängenden Flächen "tree (auto)" auswählen, um automatisch geeignete Stützstrukturen zu erzeugen. Prüfen Sie, ob zusätzliche Support-Strukturen nötig sind.` },
-            { text: `Filament-Check: Bambu PLA entsprechend auswählen "Holzfarbe" bereitstellen (Slot 1) und dann den Druckvorgang auslösen.` }
+            { text: `Filament-Check: Bambu PLA Wood-Filament bereitstellen (Slot 1) und dann den Druckvorgang auslösen.` }
         ];
     }
     
@@ -1201,6 +1228,10 @@ function compileWorkflow() {
 
     if (haptics.includes("Mehrfarbig")) {
         p2Items.push({ text: "Mehrfarbdruck überwachen: Filamentwechsel und Spülvolumen-Vorgaben kontrollieren." });
+    }
+
+    if (material === "TPU") {
+        p2Items.push({ text: "<strong>TPU-Drucküberwachung (Druckkopf 4):</strong> Achten Sie beim Druckstart und in den ersten Schichten darauf, dass das gummiartige TPU von Druckkopf 4 kontinuierlich und ohne Stau im Extruder gefördert wird." });
     }
 
     p2Items.push({ text: "Druck fortsetzen, Gehäusetür geschlossen halten und den automatischen Druckabschluss abwarten." });
