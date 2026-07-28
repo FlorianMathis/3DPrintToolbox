@@ -1080,7 +1080,7 @@ function compileWorkflow() {
     if (profile.includes("Wood")) {
         filament = "Bambu PLA Wood (Holzanteil, abrasiv)";
     } else if (material === "TPU") {
-        filament = "Bambu TPU (gummiartig) – in Druckkopf 4 laden";
+        filament = "Bambu TPU (gummiartig) – in Spulenhalter / Slot 2 laden";
     }
 
     let post = "Tree-Support mit Flachzange entfernen. Kanten mit Schleifvlies entgraten.";
@@ -1151,12 +1151,6 @@ function compileWorkflow() {
         p1Items.push({ text: `<strong>Danach anzupassen (Festigkeit)</strong>: ${infillInstructions}` });
     }
 
-    if (hasForcePause) {
-        p1Items.push({
-            text: `<strong>Druck-Pause einplanen (Bambu Studio Höhenschieber)</strong>: Nach dem Slicen den vertikalen Schieberegler (Höhenschieber) ganz rechts in der Vorschau auf <strong>einen geeigneten Layer (z. B. Mitte des Objekts)</strong> ziehen (Modell ist zur Hälfte gedruckt und oben offen). Machen Sie einen <strong>Rechtsklick auf das Plus-Symbol (+)</strong> direkt an der Schieberegler-Markierung und wählen Sie <strong>"Pause hinzufügen" (Add Pause)</strong>. Senden Sie erst danach die Datei an den Drucker, damit der Pause-Befehl im G-Code eingebettet ist.`,
-            alert: true
-        });
-    }
     p1Items.push({ text: `<strong>Support aktivieren (Bambu Studio):</strong> Bei überhängenden Flächen "tree (auto)" auswählen, um automatisch geeignete Stützstrukturen zu erzeugen. Prüfen Sie, ob zusätzliche Support-Strukturen nötig sind.`, alert: true });
 
     if (haptics.includes("Mehrfarbig")) {
@@ -1178,28 +1172,35 @@ function compileWorkflow() {
 
     if (material === "TPU") {
         p1Items.push({
-            text: `<strong>Filament laden &amp; zuweisen (Druckkopf 4 / Slot 4 für TPU):</strong><br>
-            <ul style="margin-top: 0.25rem; padding-left: 1.2rem; display: flex; flex-direction: column; gap: 0.2rem; list-style-type: disc;">
-                <li><strong>Am 3D-Drucker (Druckkopf 4):</strong> Das TPU-Filament manuell in <strong>Druckkopf 4</strong> (bzw. Spulenhalter / Slot 4) einsetzen und entsprechend laden (am Display über das Filament-Menü den Druckkopf 4 aufheizen und das Filament bis zur Düse fördern).</li>
-                <li><strong>In Bambu Studio (Auswahl &amp; Zuweisung):</strong> Wählen Sie im Slicer in der Filamentübersicht bei Platz 4 das <strong>Bambu TPU (gummiartig)</strong> aus und weisen Sie es dem 3D-Modell zu (Rechtsklick auf das Modell &gt; Filament ändern &gt; 4. TPU).</li>
-                <li><strong>Wichtig bei Weichfilamenten:</strong> Da TPU gummiartig und elastisch ist, muss das Filament absolut reibungs- und spannungsfrei in den Druckkopf 4 abrollen können, um Förderprobleme oder Verheddern im Extruder zu vermeiden.</li>
-            </ul>`,
+            text: `<strong>Am 3D-Drucker (Spulenhalter / Slot 2):</strong> Das TPU-Filament manuell in Spulenhalter / Slot 2 einsetzen und entsprechend laden.`,
             alert: true
         });
-    } else {
-        p1Items.push({ text: `Filament-Check: Bambu ${material}-Filament bereitstellen.` });
     }
-    
+
     // User requested hardcoded override for this specific combination
     if (activeProf && activeProf.id === "prof-detail" && scale === "2:1") {
         p1Items = [
             { text: `3D-Modell in Bambu Studio öffnen/importieren (Importierte Mesh-Datei).` },
             { text: `Profil auswählen: Druckerprofil "${profile}" im Bambu Studio auswählen.` },
             { text: `Danach anzupassen (Skalierung): Modell verdoppeln: Taste S im Bambu Studio drücken und die Skalierung im rechten Menü auf 200% setzen.` },
-            { text: `Support aktivieren (Bambu Studio): Bei überhängenden Flächen "tree (auto)" auswählen, um automatisch geeignete Stützstrukturen zu erzeugen. Prüfen Sie, ob zusätzliche Support-Strukturen nötig sind.` },
-            { text: `Filament-Check: Bambu PLA Wood-Filament bereitstellen (Slot 1) und dann den Druckvorgang auslösen.` }
+            { text: `Support aktivieren (Bambu Studio): Bei überhängenden Flächen "tree (auto)" auswählen, um automatisch geeignete Stützstrukturen zu erzeugen. Prüfen Sie, ob zusätzliche Support-Strukturen nötig sind.` }
         ];
     }
+
+    p1Items.push({ text: `<strong>Druckplatte slicen:</strong> Drücken Sie oben rechts im Slicer auf "Druckplatte slicen".` });
+
+    if (hasForcePause) {
+        p1Items.push({
+            text: `<strong>Druck-Pause einplanen (Bambu Studio Höhenschieber):</strong> Da Sie ein Gewichteinstellen (Metallsand) aktiviert haben, muss der Druck zuerst gesliced werden. Ziehen Sie danach mit dem vertikalen Schieberegler (Höhenschieber) rechts in der Vorschau auf ca. 50% der Höhe (oder auf einen geeigneten Layer, bei dem das Modell oben noch offen ist). Machen Sie einen Rechtsklick auf das Plus-Symbol (+) direkt an der Schieberegler-Markierung und wählen Sie <strong>"Pause hinzufügen" (Add Pause)</strong>. Senden Sie erst danach die Datei an den Drucker, damit der Pause-Befehl im G-Code eingebettet ist.`,
+            alert: true
+        });
+    }
+
+    p1Items.push(
+        { text: `<strong>Druckplatte drucken:</strong> Drücken Sie danach oben rechts auf "Druckplatte drucken".` },
+        { text: `<strong>Filament - Hauptdüse:</strong> Im erscheinenden Sende-Fenster unter "Filament - Hauptdüse" entsprechend das korrekte Filament auswählen und dem richtigen Schacht (Slot) zuweisen.` },
+        { text: `<strong>Senden:</strong> Klicken Sie abschließend auf "Senden", um den Druckauftrag an den 3D-Drucker zu senden.` }
+    );
     
     checklist.push({ title: "PHASE 1: DATENTRANSFER & SLICING (Bambu Studio)", items: p1Items });
 
@@ -1231,7 +1232,7 @@ function compileWorkflow() {
     }
 
     if (material === "TPU") {
-        p2Items.push({ text: "<strong>TPU-Drucküberwachung (Druckkopf 4):</strong> Achten Sie beim Druckstart und in den ersten Schichten darauf, dass das gummiartige TPU von Druckkopf 4 kontinuierlich und ohne Stau im Extruder gefördert wird." });
+        p2Items.push({ text: "<strong>TPU-Drucküberwachung (Spulenhalter / Slot 2):</strong> Achten Sie beim Druckstart und in den ersten Schichten darauf, dass das gummiartige TPU von Spulenhalter / Slot 2 kontinuierlich und ohne Stau im Extruder gefördert wird." });
     }
 
     p2Items.push({ text: "Druck fortsetzen, Gehäusetür geschlossen halten und den automatischen Druckabschluss abwarten." });
